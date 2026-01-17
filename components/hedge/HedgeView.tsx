@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { HedgeRecommendations } from "@/components/HedgeRecommendations";
 import { CompressionMetrics } from "@/components/CompressionMetrics";
-import type { PortfolioItem, StockInfo, AnalysisResult } from "@/app/page";
+import type { PortfolioItem, StockInfo, AnalysisResult, HedgeRecommendation } from "@/app/page";
 
 interface HedgeViewProps {
   portfolio: PortfolioItem[];
@@ -12,6 +12,8 @@ interface HedgeViewProps {
   stockInfo: Record<string, StockInfo>;
   analysisResult: AnalysisResult | null;
   setAnalysisResult: React.Dispatch<React.SetStateAction<AnalysisResult | null>>;
+  onGoToNews?: () => void;
+  onBetSelect?: (bet: HedgeRecommendation | null) => void;
 }
 
 export function HedgeView({
@@ -19,6 +21,8 @@ export function HedgeView({
   stockInfo,
   analysisResult,
   setAnalysisResult,
+  onGoToNews,
+  onBetSelect,
 }: HedgeViewProps) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -172,6 +176,10 @@ export function HedgeView({
             recommendations={analysisResult.recommendations}
             stocksWithoutHedges={analysisResult.stocksWithoutHedges}
             stockInfo={stockInfo}
+            onBetSelect={(bet) => {
+              if (onBetSelect) onBetSelect(bet);
+              if (onGoToNews) onGoToNews();
+            }}
           />
 
           <CompressionMetrics compression={analysisResult.compression} />

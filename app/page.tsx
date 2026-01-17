@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import { TabNav, type TabType } from "@/components/TabNav";
 import { PortfolioView } from "@/components/portfolio/PortfolioView";
 import { HedgeView } from "@/components/hedge/HedgeView";
-import { NewsView } from "@/components/analytics/AnalyticsView";
+import { NewsView } from "@/components/news/NewsView";
 import { GreeksView } from "@/components/greeks/GreeksView";
+import type { NewsArticle } from "@/app/api/news/route";
 
 // Shared types - exported for use in other components
 export interface PortfolioItem {
@@ -50,6 +51,16 @@ export default function Home() {
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
   const [stockInfo, setStockInfo] = useState<Record<string, StockInfo>>({});
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [selectedBet, setSelectedBet] = useState<HedgeRecommendation | null>(null);
+  const [cachedArticles, setCachedArticles] = useState<NewsArticle[]>([]);
+
+  const handleBetSelect = (bet: HedgeRecommendation | null) => {
+    setSelectedBet(bet);
+  };
+
+  const handleArticlesUpdate = (articles: NewsArticle[]) => {
+    setCachedArticles(articles);
+  };
 
   // Fetch stock data when portfolio changes
   const fetchStockData = useCallback(
@@ -127,7 +138,6 @@ export default function Home() {
             setPortfolio={setPortfolio}
             stockInfo={stockInfo}
             setStockInfo={setStockInfo}
-            onBetSelect={handleBetSelect}
           />
         )}
         {activeTab === "hedges" && (
@@ -137,6 +147,8 @@ export default function Home() {
             stockInfo={stockInfo}
             analysisResult={analysisResult}
             setAnalysisResult={setAnalysisResult}
+            onGoToNews={() => setActiveTab("news")}
+            onBetSelect={handleBetSelect}
           />
         )}
         {activeTab === "news" && (

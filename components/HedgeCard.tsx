@@ -93,8 +93,19 @@ export function HedgeCard({ recommendation, stockInfo = {}, onBetSelect }: Hedge
           <span className="text-sm font-mono">${suggestedAllocation}</span>
         </div>
 
-        {/* One-line reasoning */}
-        <p className="text-sm text-muted-foreground">{reasoning}</p>
+        {/* Reasoning + News Link */}
+        <div className="flex items-end justify-between gap-4">
+          <p className="text-sm text-muted-foreground flex-1">{reasoning}</p>
+          {onBetSelect && (
+            <button
+              onClick={handleNewsClick}
+              className="text-xs text-muted-foreground hover:text-accent transition-colors flex items-center gap-1 shrink-0"
+            >
+              <Newspaper className="w-3 h-3" />
+              <span>News</span>
+            </button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
