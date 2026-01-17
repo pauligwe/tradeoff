@@ -1,4 +1,7 @@
-import yahooFinance from "yahoo-finance2";
+import YahooFinance from "yahoo-finance2";
+
+// Initialize yahoo-finance2 client as the library requires
+const yf = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
 
 export interface StockData {
   ticker: string;
@@ -17,17 +20,23 @@ export async function getStockData(tickers: string[]): Promise<StockData[]> {
   // Fetch quotes in parallel
   const promises = tickers.map(async (ticker) => {
     try {
-      const quote = await yahooFinance.quote(ticker);
+      // Use quoteSummary for more detailed info including sector
+      const result = await yf.quoteSummary(ticker, {
+        modules: ["price", "summaryProfile"],
+      });
+      
+      const price = result.price;
+      const profile = result.summaryProfile;
       
       return {
         ticker: ticker.toUpperCase(),
-        name: quote.shortName || quote.longName || ticker,
-        sector: quote.sector || "Unknown",
-        industry: quote.industry || "Unknown",
-        price: quote.regularMarketPrice || 0,
-        marketCap: quote.marketCap || 0,
-        change: quote.regularMarketChange || 0,
-        changePercent: quote.regularMarketChangePercent || 0,
+        name: price?.shortName || price?.longName || ticker,
+        sector: profile?.sector || "Unknown",
+        industry: profile?.industry || "Unknown",
+        price: price?.regularMarketPrice || 0,
+        marketCap: price?.marketCap || 0,
+        change: price?.regularMarketChange || 0,
+        changePercent: price?.regularMarketChangePercent || 0,
       };
     } catch (error) {
       console.error(`Error fetching data for ${ticker}:`, error);

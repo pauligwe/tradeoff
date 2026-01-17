@@ -6,48 +6,75 @@ export interface HedgeRecommendation {
   reasoning: string;
   hedgesAgainst: string;
   suggestedAllocation: number;
+  affectedStocks: string[]; // All stocks this hedge affects
+  confidence: "high" | "medium";
 }
 
 export interface AnalysisResponse {
   summary: string;
   recommendations: HedgeRecommendation[];
+  stocksWithoutHedges: string[];
 }
 
-// Groq API (not Grok from xAI)
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
-// Models in order of preference (will fallback if rate limited)
 const GROQ_MODELS = [
-  "llama-3.3-70b-versatile",      // Best quality
-  "meta-llama/llama-4-scout-17b-16e-instruct", // High token limit
-  "moonshotai/kimi-k2-instruct",  // Good alternative
-  "qwen/qwen3-32b",               // Another option
-  "llama-3.1-8b-instant",         // Fast fallback
+  "llama-3.3-70b-versatile",
+  "meta-llama/llama-4-scout-17b-16e-instruct",
+  "moonshotai/kimi-k2-instruct",
+  "qwen/qwen3-32b",
+  "llama-3.1-8b-instant",
 ];
 
-const SYSTEM_PROMPT = `You are a financial analyst specializing in portfolio hedging using prediction markets. Your task is to analyze a user's stock portfolio and recommend Polymarket bets that could hedge their risk exposure.
+const SYSTEM_PROMPT = `You are a hedge analyst finding Polymarket bets to hedge stocks.
 
-For each recommendation, consider:
-1. What risk does the stock portfolio face?
-2. Which prediction market outcome would benefit if that risk materializes?
-3. How strongly correlated is the hedge?
+YOUR TASK:
+Find Polymarket events that DIRECTLY affect stocks in the portfolio. Group stocks that share the same hedge.
 
-Respond with JSON in this exact format:
+RULES:
+1. Only recommend hedges with DIRECT connections to the companies
+2. If one market affects multiple stocks, LIST ALL AFFECTED STOCKS together
+3. Quality over quantity - only genuinely relevant hedges
+4. Only use markets from the provided list
+
+GROUPING EXAMPLE:
+If "Will US tariffs exceed $250B?" affects AAPL, TSLA, and NVDA - list them all together, don't create 3 separate entries.
+
+WHAT MAKES A GOOD HEDGE:
+✅ HIGH confidence: Directly mentions company, CEO, or core product
+   - "Will Elon Musk..." → TSLA
+   - "NVIDIA chip exports" → NVDA
+   
+✅ MEDIUM confidence: Directly affects core business
+   - "US tariffs" → AAPL, TSLA, NVDA (all have China exposure)
+   - "AI regulation" → NVDA, MSFT, GOOGL, META (all have AI products)
+
+❌ SKIP - Too generic:
+   - "Recession" - affects everything
+   - "Interest rates" - too macro
+
+Respond with JSON:
 {
-  "summary": "Brief analysis of the portfolio's main risk exposures",
+  "summary": "Brief summary of hedges found",
   "recommendations": [
     {
-      "market": "The exact market question",
+      "market": "EXACT title from the list",
       "probability": 0.52,
       "position": "YES",
-      "reasoning": "Why this hedge makes sense",
-      "hedgesAgainst": "The specific risk this addresses",
-      "suggestedAllocation": 500
+      "reasoning": "Why this affects these specific stocks",
+      "hedgesAgainst": "The shared risk",
+      "suggestedAllocation": 500,
+      "affectedStocks": ["AAPL", "TSLA", "NVDA"],
+      "confidence": "medium"
     }
-  ]
+  ],
+  "stocksWithoutHedges": ["JNJ"]
 }
 
-Provide 2-4 recommendations. Be specific and actionable. Only output valid JSON, no markdown.`;
+IMPORTANT: 
+- Don't repeat the same market multiple times
+- Group all affected stocks into one recommendation
+- Put hedges that affect MORE stocks first in your list`;
 
 async function tryModel(
   model: string,
@@ -69,16 +96,15 @@ async function tryModel(
           { role: "system", content: SYSTEM_PROMPT },
           {
             role: "user",
-            content: `Analyze this portfolio and recommend Polymarket hedges:\n\n${context}`,
+            content: `Find hedges for this portfolio. Group stocks that share the same hedge:\n\n${context}`,
           },
         ],
-        temperature: 0.7,
-        max_tokens: 2000,
+        temperature: 0.3,
+        max_tokens: 2500,
       }),
     });
 
     if (response.status === 429) {
-      // Rate limited - try next model
       console.log(`Model ${model} rate limited`);
       return null;
     }
@@ -87,7 +113,6 @@ async function tryModel(
       const errorText = await response.text();
       console.error(`Groq API error for ${model}:`, response.status, errorText);
       
-      // If it's a model-specific error, try next model
       if (response.status === 400 || response.status === 404) {
         return null;
       }
@@ -102,7 +127,6 @@ async function tryModel(
       throw new Error("No content in Groq response");
     }
 
-    // Parse JSON from the response
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       throw new Error("Could not parse JSON from Groq response");
@@ -112,17 +136,32 @@ async function tryModel(
     
     console.log(`Success with model: ${model}`);
     
+    // Parse and deduplicate recommendations
+    const recommendations = (parsed.recommendations || []).map((rec: Record<string, unknown>) => ({
+      market: String(rec.market || ""),
+      marketUrl: "",
+      probability: Number(rec.probability) || 0.5,
+      position: rec.position === "NO" ? "NO" : "YES",
+      reasoning: String(rec.reasoning || ""),
+      hedgesAgainst: String(rec.hedgesAgainst || ""),
+      suggestedAllocation: Number(rec.suggestedAllocation) || 100,
+      affectedStocks: Array.isArray(rec.affectedStocks) 
+        ? rec.affectedStocks.map(String).filter(Boolean)
+        : [],
+      confidence: rec.confidence === "medium" ? "medium" : "high",
+    }));
+
+    // Sort by number of affected stocks (descending)
+    recommendations.sort((a: HedgeRecommendation, b: HedgeRecommendation) => 
+      b.affectedStocks.length - a.affectedStocks.length
+    );
+
     return {
       summary: parsed.summary || "Analysis complete.",
-      recommendations: (parsed.recommendations || []).map((rec: Record<string, unknown>) => ({
-        market: rec.market || "",
-        marketUrl: "", // Will be filled in by the caller
-        probability: Number(rec.probability) || 0.5,
-        position: rec.position === "NO" ? "NO" : "YES",
-        reasoning: String(rec.reasoning || ""),
-        hedgesAgainst: String(rec.hedgesAgainst || ""),
-        suggestedAllocation: Number(rec.suggestedAllocation) || 100,
-      })),
+      recommendations,
+      stocksWithoutHedges: Array.isArray(parsed.stocksWithoutHedges) 
+        ? parsed.stocksWithoutHedges.map(String)
+        : [],
     };
   } catch (error) {
     console.error(`Error with model ${model}:`, error);
@@ -134,7 +173,6 @@ export async function analyzeWithGroq(
   context: string,
   apiKey: string
 ): Promise<AnalysisResponse> {
-  // Try each model in order until one works
   for (const model of GROQ_MODELS) {
     const result = await tryModel(model, context, apiKey);
     if (result) {
@@ -145,5 +183,4 @@ export async function analyzeWithGroq(
   throw new Error("All models failed or rate limited. Please try again later.");
 }
 
-// Keep old export name for backwards compatibility
 export const analyzeWithGrok = analyzeWithGroq;

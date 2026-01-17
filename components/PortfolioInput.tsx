@@ -10,6 +10,7 @@ interface PortfolioInputProps {
   setPortfolio: React.Dispatch<React.SetStateAction<PortfolioItem[]>>;
   onAnalyze: () => void;
   isAnalyzing: boolean;
+  compact?: boolean;
 }
 
 const DEMO_PORTFOLIOS = {
@@ -120,6 +121,7 @@ export function PortfolioInput({
   setPortfolio,
   onAnalyze,
   isAnalyzing,
+  compact = false,
 }: PortfolioInputProps) {
   const [ticker, setTicker] = useState("");
   const [shares, setShares] = useState("");
@@ -149,10 +151,6 @@ export function PortfolioInput({
 
     setTicker("");
     setShares("");
-  };
-
-  const handleRemove = (tickerToRemove: string) => {
-    setPortfolio((prev) => prev.filter((p) => p.ticker !== tickerToRemove));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -208,9 +206,46 @@ export function PortfolioInput({
     }
   };
 
-  const clearPortfolio = () => {
-    setPortfolio([]);
-  };
+  // Compact mode - just show add form and analyze button
+  if (compact) {
+    return (
+      <div className="flex flex-wrap items-center gap-3">
+        <Input
+          type="text"
+          placeholder="Add ticker"
+          value={ticker}
+          onChange={(e) => setTicker(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className="w-32 font-mono uppercase"
+        />
+        <Input
+          type="number"
+          placeholder="Shares"
+          value={shares}
+          onChange={(e) => setShares(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className="w-24"
+          min="1"
+        />
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={handleAdd}
+          disabled={!ticker.trim() || !shares.trim()}
+        >
+          Add
+        </Button>
+        <div className="flex-1" />
+        <Button
+          onClick={onAnalyze}
+          disabled={portfolio.length === 0 || isAnalyzing}
+          className="bg-accent text-accent-foreground hover:bg-accent/90"
+        >
+          {isAnalyzing ? "Analyzing..." : "Analyze Portfolio"}
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -316,50 +351,6 @@ Or paste directly from your broker...`}
           <Button size="sm" onClick={handleImport} disabled={!importText.trim()}>
             Import
           </Button>
-        </div>
-      )}
-
-      {/* Portfolio List */}
-      {portfolio.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">
-              {portfolio.length} stock{portfolio.length !== 1 ? "s" : ""} • {portfolio.reduce((sum, p) => sum + p.shares, 0).toLocaleString()} total shares
-            </span>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setShowImport(true)}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Import more
-              </button>
-              <button
-                onClick={clearPortfolio}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Clear all
-              </button>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            {portfolio.map((item) => (
-              <div
-                key={item.ticker}
-                className="flex items-center gap-3 px-4 py-2 bg-secondary rounded-lg border border-border"
-              >
-                <span className="font-mono font-medium">{item.ticker}</span>
-                <span className="text-muted-foreground">×</span>
-                <span className="text-muted-foreground">{item.shares.toLocaleString()}</span>
-                <button
-                  onClick={() => handleRemove(item.ticker)}
-                  className="ml-2 text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label={`Remove ${item.ticker}`}
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
         </div>
       )}
 
