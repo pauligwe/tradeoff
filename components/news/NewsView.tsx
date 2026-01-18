@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { ExternalLink, Clock } from "lucide-react";
 import type { PortfolioItem, StockInfo, HedgeRecommendation } from "@/app/page";
 import type { NewsArticle } from "@/app/api/news/route";
 
@@ -28,7 +27,6 @@ export function NewsView({
   const [articles, setArticles] = useState<NewsArticle[]>(cachedArticles);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
   const [selectedStockFilter, setSelectedStockFilter] = useState<string>("all");
 
   const fetchNews = useCallback(async () => {
@@ -42,11 +40,6 @@ export function NewsView({
         portfolio,
         betMarket: selectedBet?.market,
       };
-      
-      console.log("Fetching news with:", { 
-        portfolioCount: portfolio.length, 
-        betMarket: selectedBet?.market 
-      });
 
       const response = await fetch("/api/news", {
         method: "POST",
@@ -61,305 +54,233 @@ export function NewsView({
 
       const data = await response.json();
       const newArticles = data.articles || [];
-      
-      console.log("Received articles:", newArticles.length);
-      
+
       setArticles(newArticles);
-      // Only update cache if we're not viewing a specific bet
-      // (bet-specific news shouldn't replace general portfolio news cache)
       if (onArticlesUpdate && !selectedBet) {
         onArticlesUpdate(newArticles);
       }
-      setSelectedArticle(null); // Reset selected article when fetching new news
     } catch (err) {
-      console.error("Error fetching news:", err);
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setIsLoading(false);
     }
   }, [portfolio, selectedBet, onArticlesUpdate]);
 
-  // Update articles when cached articles change (from preloading)
+  // Update articles when cached articles change
   useEffect(() => {
     if (cachedArticles.length > 0 && !selectedBet) {
       setArticles(cachedArticles);
     }
   }, [cachedArticles, selectedBet]);
 
-  // Fetch news when portfolio or selectedBet changes (only if not preloaded or bet-specific)
+  // Fetch news when portfolio or selectedBet changes
   useEffect(() => {
     if (portfolio.length === 0) {
       setArticles([]);
       return;
     }
 
-    // If a bet is selected, always fetch news for that bet (don't use cache)
     if (selectedBet) {
       fetchNews();
       return;
     }
 
-    // If preloaded and we have cached articles, use them (don't refetch)
     if (isPreloaded && cachedArticles.length > 0) {
       setArticles(cachedArticles);
       return;
     }
 
-    // If no bet selected and we have cached articles, use them
     if (cachedArticles.length > 0 && !selectedBet) {
       setArticles(cachedArticles);
       return;
     }
 
-    // Otherwise fetch new articles (only if not preloaded)
     if (!isPreloaded) {
       fetchNews();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [portfolio.length, selectedBet?.market, isPreloaded]); // Fetch when portfolio or selected bet changes
+  }, [portfolio.length, selectedBet?.market, isPreloaded]);
 
-  const handleBackToList = () => {
-    setSelectedArticle(null);
-    if (onBetSelect) {
-      onBetSelect(null);
+  // Get unique stocks from articles for filtering - only show stocks that have articles
+  const stocksWithArticles = new Set<string>();
+  for (const article of articles) {
+    for (const ticker of article.relatedStocks) {
+      if (portfolio.some((p) => p.ticker === ticker)) {
+        stocksWithArticles.add(ticker);
+      }
     }
-  };
+  }
+  
+  // Build filter list: "all" + only stocks that have articles
+  const stockFilters = ["all", ...Array.from(stocksWithArticles).sort()];
+
+  const filteredArticles = articles.filter((article) => {
+    if (selectedStockFilter === "all") return true;
+    return article.relatedStocks.includes(selectedStockFilter);
+  });
+  
+  // Reset filter if selected stock no longer has articles
+  useEffect(() => {
+    if (selectedStockFilter !== "all" && !stocksWithArticles.has(selectedStockFilter)) {
+      setSelectedStockFilter("all");
+    }
+  }, [articles, selectedStockFilter]);
 
   if (portfolio.length === 0) {
     return (
-      <div className="bg-card border border-border rounded-lg p-8 text-center">
-        <h2 className="text-lg font-medium mb-2">No Portfolio Data</h2>
-        <p className="text-muted-foreground">
-          Add stocks to your portfolio in the Hedge Advisor tab to see relevant news.
-        </p>
+      <div className="max-w-[1400px] mx-auto px-6 py-8">
+        <div className="bg-[#1c2026] border border-[#2d3139] p-12 text-center">
+          <h2 className="font-semibold mb-2">No Portfolio Data</h2>
+          <p className="text-[#858687]">
+            Add stocks to your portfolio to see relevant news.
+          </p>
+        </div>
       </div>
     );
   }
 
-  // Show detail view for selected article
-  if (selectedArticle) {
-    return (
-      <div className="space-y-6">
-        <Button
-          variant="outline"
-          onClick={handleBackToList}
-          className="mb-4"
-        >
-          ← Back to Articles
-        </Button>
-
-        <Card className="bg-card border-border">
-          <CardContent className="p-6 space-y-4">
-            <div>
-              <h1 className="text-2xl font-semibold mb-2">{selectedArticle.title}</h1>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <span>{selectedArticle.source}</span>
-                <span>•</span>
-                <span>{selectedArticle.publishedAt}</span>
-              </div>
-            </div>
-
-            {selectedBet && (
-              <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg">
-                <p className="text-sm font-medium mb-2">Related Polymarket Bet:</p>
-                <p className="text-sm text-foreground font-medium mb-1">
-                  &ldquo;{selectedBet.market}&rdquo;
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {selectedBet.reasoning}
-                </p>
-                <div className="mt-2 flex items-center gap-2">
-                  <span className="text-xs px-2 py-1 rounded bg-accent/20 text-accent">
-                    Probability: {Math.round(selectedBet.probability * 100)}%
-                  </span>
-                  <span className="text-xs px-2 py-1 rounded bg-accent/20 text-accent">
-                    Bet {selectedBet.position}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            <div>
-              <h2 className="text-lg font-medium mb-2">Relevance</h2>
-              <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{selectedArticle.relevance}</p>
-            </div>
-
-            {selectedArticle.relatedStocks.length > 0 && (
-              <div>
-                <h2 className="text-lg font-medium mb-2">Related Stocks</h2>
-                <div className="flex flex-wrap gap-2">
-                  {selectedArticle.relatedStocks.map((ticker) => {
-                    const info = stockInfo[ticker];
-                    return (
-                      <span
-                        key={ticker}
-                        className="px-2 py-1 rounded bg-accent/15 text-accent font-mono text-sm border border-accent/20"
-                      >
-                        {ticker}
-                        {info && ` (${info.name})`}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            <div className="pt-4">
-              <Button
-                onClick={() => {
-                  if (selectedArticle.url) {
-                    window.open(selectedArticle.url, "_blank", "noopener,noreferrer");
-                  }
-                }}
-                className="w-full"
-                disabled={!selectedArticle.url}
-              >
-                Read Full Article →
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // Show list view
   return (
-    <div className="space-y-6">
-      {/* Header with bet context if selected */}
-      {selectedBet && (
-        <div className="bg-accent/10 border border-accent/20 rounded-lg p-4">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1">
-              <p className="text-sm font-medium mb-1">Viewing news for:</p>
-              <p className="text-foreground font-medium mb-2">
-                &ldquo;{selectedBet.market}&rdquo;
-              </p>
-              <p className="text-sm text-muted-foreground">{selectedBet.reasoning}</p>
+    <div className="max-w-[1400px] mx-auto px-6 py-8">
+      {/* Filter Header */}
+      <div className="bg-[#1c2026] border border-[#2d3139] p-6 mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-sm text-[#858687] mb-2">STOCK FILTER</h2>
+            <div className="flex gap-2 flex-wrap">
+              {stockFilters.map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setSelectedStockFilter(filter)}
+                  className={`px-3 py-2 text-sm font-medium border transition-all ${
+                    selectedStockFilter === filter
+                      ? "text-[#3fb950] border-[#3fb950] bg-transparent"
+                      : "bg-transparent text-[#858687] border-[#2d3139] hover:text-white hover:border-[#3fb950]"
+                  }`}
+                >
+                  {filter === "all" ? "All Stocks" : filter}
+                </button>
+              ))}
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                if (onBetSelect) {
-                  onBetSelect(null);
-                }
-              }}
-            >
-              Show All News
-            </Button>
           </div>
-        </div>
-      )}
-
-      <div className="flex items-center justify-between gap-4">
-        <h2 className="text-lg font-medium">
-          {selectedBet ? "News for Selected Bet" : "Portfolio News"}
-        </h2>
-        <div className="flex items-center gap-3">
-          {/* Stock Filter Dropdown */}
-          <select
-            value={selectedStockFilter}
-            onChange={(e) => setSelectedStockFilter(e.target.value)}
-            className="px-3 py-2 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-          >
-            <option value="all">All Stocks</option>
-            {portfolio.map((item) => {
-              const info = stockInfo[item.ticker];
-              return (
-                <option key={item.ticker} value={item.ticker}>
-                  {item.ticker} {info ? `(${info.name})` : ''}
-                </option>
-              );
-            })}
-          </select>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={fetchNews}
-            disabled={isLoading}
-          >
-            {isLoading ? "Loading..." : "Refresh"}
-          </Button>
+          <div className="text-right">
+            <div className="text-xs text-[#858687] mb-1">ARTICLES</div>
+            <div className="text-2xl font-semibold mono">{filteredArticles.length}</div>
+          </div>
         </div>
       </div>
 
-      {error && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-          <p className="text-sm text-destructive">{error}</p>
-        </div>
-      )}
-
-      {isLoading && (
-        <div className="text-center py-12">
-          <div className="inline-flex items-center gap-3 text-muted-foreground">
-            <div className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin" />
-            <span>Fetching news articles...</span>
+      {/* Selected Bet Context */}
+      {selectedBet && (
+        <div className="bg-[#1c2026] border border-[#2d3139] border-l-2 border-l-[#3fb950] p-6 mb-6">
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="text-xs text-[#858687] mb-1">SELECTED MARKET</div>
+              <div className="text-lg font-semibold mb-2">{selectedBet.market}</div>
+              <div className="text-sm text-[#858687]">{selectedBet.reasoning}</div>
+            </div>
+            <div className="flex gap-2">
+              <a
+                href={selectedBet.marketUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-transparent border border-[#3fb950] text-[#3fb950] px-4 py-2 text-sm font-medium hover:bg-[#3fb950] hover:text-white transition-all"
+              >
+                View Market
+                <ExternalLink size={14} />
+              </a>
+              <button
+                onClick={() => onBetSelect && onBetSelect(null)}
+                className="px-4 py-2 text-sm border border-[#2d3139] text-[#858687] hover:text-white hover:border-[#3d4149] transition-colors"
+              >
+                Show All
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {!isLoading && articles.length === 0 && !error && (
-        <div className="bg-card border border-border rounded-lg p-8 text-center">
-          <p className="text-muted-foreground">No news articles found.</p>
+      {/* Error */}
+      {error && (
+        <div className="bg-[#1c2026] border border-[#f85149] border-l-2 p-4 mb-6">
+          <p className="text-sm text-[#f85149]">{error}</p>
         </div>
       )}
 
-      {!isLoading && articles.length > 0 && (
-        <div className="space-y-4">
-          {articles
-            .filter((article) => {
-              if (selectedStockFilter === "all") return true;
-              return article.relatedStocks.includes(selectedStockFilter);
-            })
-            .map((article, idx) => (
-            <Card
-              key={idx}
-              className="bg-card border-border hover:border-accent/50 transition-colors cursor-pointer"
-              onClick={() => setSelectedArticle(article)}
-            >
-              <CardContent className="p-5 space-y-3">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <h3 className="font-medium text-foreground mb-2 line-clamp-2">
-                      {article.title}
-                    </h3>
-                  </div>
-                </div>
+      {/* Loading */}
+      {isLoading && (
+        <div className="flex flex-col items-center justify-center py-16">
+          <div className="w-8 h-8 border-2 border-[#3fb950] border-t-transparent animate-spin mb-4" />
+          <p className="text-[#858687]">Fetching news articles...</p>
+        </div>
+      )}
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                    <span>{article.source}</span>
-                    <span>•</span>
+      {/* No Articles */}
+      {!isLoading && filteredArticles.length === 0 && !error && (
+        <div className="bg-[#1c2026] border border-[#2d3139] p-12 text-center">
+          <div className="text-[#858687] mb-2">No articles found</div>
+          <div className="text-sm text-[#858687]">Try selecting a different stock filter</div>
+        </div>
+      )}
+
+      {/* Articles List */}
+      {!isLoading && filteredArticles.length > 0 && (
+        <div className="space-y-4">
+          {filteredArticles.map((article, index) => (
+            <div key={index} className="bg-[#1c2026] border border-[#2d3139] p-6">
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-semibold">{article.source}</span>
+                  <span className="text-[#858687]">|</span>
+                  <div className="flex items-center gap-1 text-[#858687] text-sm">
+                    <Clock size={14} />
                     <span>{article.publishedAt}</span>
                   </div>
-                  {article.relatedStocks.length > 0 && (
-                    <div className="flex gap-1">
-                      {article.relatedStocks.slice(0, 3).map((ticker) => (
-                        <span
-                          key={ticker}
-                          className="px-2 py-0.5 rounded bg-accent/15 text-accent font-mono text-xs border border-accent/20"
-                        >
-                          {ticker}
-                        </span>
-                      ))}
-                      {article.relatedStocks.length > 3 && (
-                        <span className="px-2 py-0.5 text-xs text-muted-foreground">
-                          +{article.relatedStocks.length - 3}
-                        </span>
-                      )}
-                    </div>
-                  )}
                 </div>
+                {article.relatedStocks.length > 0 && (
+                  <div className="flex gap-2">
+                    {article.relatedStocks.slice(0, 3).map((ticker) => (
+                      <span key={ticker} className="bg-[#0d1117] px-2 py-1 border border-[#2d3139] text-xs mono">
+                        {ticker}
+                      </span>
+                    ))}
+                    {article.relatedStocks.length > 3 && (
+                      <span className="text-xs text-[#858687]">+{article.relatedStocks.length - 3}</span>
+                    )}
+                  </div>
+                )}
+              </div>
 
-                <div className="pt-2 border-t border-border">
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {article.relevance}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+              <h3 className="text-lg font-semibold mb-4">{article.title}</h3>
+
+              <div className="bg-[#0d1117] border border-[#2d3139] border-l-2 border-l-[#858687] p-4 mb-4">
+                <div className="text-xs text-[#858687] mb-2">RELEVANCE</div>
+                <p className="text-sm text-[#858687] leading-relaxed">{article.relevance}</p>
+              </div>
+
+              {article.url && (
+                <a
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-[#3fb950] text-sm font-medium hover:underline"
+                >
+                  Read Full Article
+                  <ExternalLink size={14} />
+                </a>
+              )}
+            </div>
           ))}
+        </div>
+      )}
+
+      {/* Refresh Button */}
+      {!isLoading && (
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={fetchNews}
+            className="px-6 py-2 border border-[#2d3139] text-[#858687] hover:text-white hover:border-[#3fb950] transition-colors"
+          >
+            Refresh News
+          </button>
         </div>
       )}
     </div>

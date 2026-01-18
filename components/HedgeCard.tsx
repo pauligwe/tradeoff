@@ -1,137 +1,119 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Newspaper } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import type { HedgeRecommendation, StockInfo } from "@/app/page";
 
 interface HedgeCardProps {
   recommendation: HedgeRecommendation;
   stockInfo?: Record<string, StockInfo>;
   onBetSelect?: (bet: HedgeRecommendation | null) => void;
+  portfolioValue?: number;
 }
 
-export function HedgeCard({ recommendation, stockInfo = {}, onBetSelect }: HedgeCardProps) {
+export function HedgeCard({ recommendation, stockInfo = {}, portfolioValue = 50000 }: HedgeCardProps) {
   const {
     market,
     marketUrl,
-    outcome,
     probability,
     position,
     reasoning,
     suggestedAllocation,
     affectedStocks,
+    hedgesAgainst,
+    confidence,
   } = recommendation;
 
-  const stockCount = affectedStocks.length;
   const currentOdds = Math.round(probability * 100);
-
-  const handleNewsClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (onBetSelect) {
-      onBetSelect(recommendation);
-    }
-  };
 
   // Calculate potential payoff
   const entryPrice = position === "YES" ? probability : (1 - probability);
-  const maxProfit = suggestedAllocation * ((1 - entryPrice) / entryPrice);
-  const maxLoss = suggestedAllocation;
+  const potentialPayout = suggestedAllocation * (1 / entryPrice);
+  const potentialReturn = ((potentialPayout / suggestedAllocation - 1) * 100).toFixed(0);
+  const portfolioPercentage = ((suggestedAllocation / portfolioValue) * 100).toFixed(1);
 
   return (
-    <Card className="bg-[#1c2026] border-[#2d3139] hover:border-[#3d4149] transition-colors">
-      <CardContent className="p-5 space-y-4">
-        {/* Market Title & Probability */}
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <a
-              href={marketUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-[#3fb950] transition-colors font-medium inline-flex items-start gap-1"
-            >
-              <span className="line-clamp-2">{market}</span>
-              <span className="text-[#858687] hover:text-[#3fb950] shrink-0 text-sm">↗</span>
-            </a>
-          </div>
-          <div className="text-right shrink-0">
-            <span className="text-2xl font-bold text-white">{currentOdds}%</span>
-            <p className="text-xs text-[#858687]">chance</p>
+    <div className="bg-[#1c2026] border border-[#2d3139] p-6">
+      {/* Header */}
+      <div className="mb-4">
+        <div className="flex items-start justify-between mb-3">
+          <h3 className="font-semibold text-lg flex-1">{market}</h3>
+          <div className={`px-3 py-1 text-xs ml-4 border font-medium ${
+            confidence === "high" 
+              ? "border-[#3fb950] text-[#3fb950]" 
+              : "border-[#fbbf24] text-[#fbbf24]"
+          }`}>
+            {confidence.toUpperCase()}
           </div>
         </div>
-
-        {/* Yes/No Buttons - Polymarket Style */}
-        <div className="flex gap-2">
-          <button
-            className={`flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all ${
-              position === "YES"
-                ? "bg-[rgba(63,185,80,0.2)] text-[#3fb950] border-2 border-[#3fb950]"
-                : "bg-[rgba(63,185,80,0.1)] text-[#3fb950] border border-[rgba(63,185,80,0.3)] opacity-50"
-            }`}
-          >
-            Yes {Math.round(probability * 100)}¢
-          </button>
-          <button
-            className={`flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all ${
-              position === "NO"
-                ? "bg-[rgba(248,81,73,0.2)] text-[#f85149] border-2 border-[#f85149]"
-                : "bg-[rgba(248,81,73,0.1)] text-[#f85149] border border-[rgba(248,81,73,0.3)] opacity-50"
-            }`}
-          >
-            No {Math.round((1 - probability) * 100)}¢
-          </button>
-        </div>
-
-        {/* Payoff Summary */}
-        <div className="grid grid-cols-3 gap-3 p-3 bg-[#12161c] rounded-lg">
+        
+        {/* Stats Row */}
+        <div className="flex items-center gap-6">
           <div>
-            <p className="text-xs text-[#858687]">Position</p>
-            <p className="font-mono font-semibold text-white">${suggestedAllocation}</p>
+            <div className="text-xs text-[#858687] mb-1">CURRENT PROBABILITY</div>
+            <div className="text-2xl font-semibold mono">
+              {currentOdds}% {position}
+            </div>
           </div>
+          <div className="h-8 w-[1px] bg-[#2d3139]" />
           <div>
-            <p className="text-xs text-[#858687]">If Win</p>
-            <p className="font-mono font-semibold text-[#3fb950]">+${maxProfit.toFixed(0)}</p>
+            <div className="text-xs text-[#858687] mb-1">RECOMMENDED POSITION</div>
+            <div className={`text-lg font-semibold mono ${position === "YES" ? "text-[#3fb950]" : "text-[#f85149]"}`}>
+              BET {position}
+            </div>
           </div>
+          <div className="h-8 w-[1px] bg-[#2d3139]" />
           <div>
-            <p className="text-xs text-[#858687]">If Lose</p>
-            <p className="font-mono font-semibold text-[#f85149]">-${maxLoss}</p>
+            <div className="text-xs text-[#858687] mb-1">ALLOCATION</div>
+            <div className="text-lg font-semibold mono">${suggestedAllocation.toLocaleString()}</div>
+            <div className="text-xs text-[#858687] mono">
+              {portfolioPercentage}% of portfolio
+            </div>
+          </div>
+          <div className="h-8 w-[1px] bg-[#2d3139]" />
+          <div>
+            <div className="text-xs text-[#858687] mb-1">POTENTIAL PAYOUT</div>
+            <div className="text-lg font-semibold mono text-[#3fb950]">
+              ${Math.round(potentialPayout).toLocaleString()}
+            </div>
+            <div className="text-xs text-[#858687] mono">
+              {potentialReturn}% return
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Affected Stocks */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-[#858687]">Hedges:</span>
-          {affectedStocks.map((ticker) => {
-            const info = stockInfo[ticker];
-            return (
-              <div key={ticker} className="group relative">
-                <span className="px-2 py-0.5 rounded bg-[#252932] text-[#58a6ff] font-mono text-xs border border-[#2d3139]">
-                  {ticker}
-                </span>
-                {info && (
-                  <span className="absolute hidden group-hover:block bottom-full left-0 mb-1 px-2 py-1 bg-[#1c2026] border border-[#2d3139] rounded text-xs whitespace-nowrap z-10 text-white">
-                    {info.name}
-                  </span>
-                )}
-              </div>
-            );
-          })}
+      {/* Details Box */}
+      <div className="bg-[#0d1117] border border-[#2d3139] border-l-2 border-l-[#3fb950] p-4 mb-4">
+        <div className="mb-3">
+          <div className="text-xs text-[#858687] mb-1">HEDGES AGAINST</div>
+          <div className="text-sm font-semibold">{hedgesAgainst}</div>
         </div>
+        <div className="mb-3">
+          <div className="text-xs text-[#858687] mb-1">AFFECTED STOCKS</div>
+          <div className="flex gap-2">
+            {affectedStocks.map((ticker) => (
+              <span key={ticker} className="mono text-sm bg-[#1c2026] px-2 py-1 border border-[#2d3139]">
+                {ticker}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div className="text-xs text-[#858687] mb-1">REASONING</div>
+          <div className="text-sm text-[#858687]">{reasoning}</div>
+        </div>
+      </div>
 
-        {/* Reasoning + News Link */}
-        <div className="flex items-end justify-between gap-4 pt-2 border-t border-[#2d3139]">
-          <p className="text-sm text-[#858687] flex-1">{reasoning}</p>
-          {onBetSelect && (
-            <button
-              onClick={handleNewsClick}
-              className="text-xs text-[#858687] hover:text-[#3fb950] transition-colors flex items-center gap-1 shrink-0"
-            >
-              <Newspaper className="w-3 h-3" />
-              <span>News</span>
-            </button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+      {/* Action Button */}
+      <a
+        href={marketUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 bg-transparent border border-[#3fb950] text-[#3fb950] px-4 py-2 text-sm font-medium hover:bg-[#3fb950] hover:text-white transition-all"
+      >
+        View on Polymarket
+        <ExternalLink size={14} />
+      </a>
+    </div>
   );
 }

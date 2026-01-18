@@ -97,9 +97,12 @@ function checkRiskFactor(
   }
 
   if (factor.id === "sector_concentration") {
-    const topSector = Object.entries(sectorWeights).sort(
-      (a, b) => b[1] - a[1],
-    )[0];
+    // Exclude "Unknown" sector from sector concentration risk
+    // since stocks with unknown sector may not actually be related
+    const knownSectorWeights = Object.entries(sectorWeights)
+      .filter(([sector]) => sector !== "Unknown");
+    
+    const topSector = knownSectorWeights.sort((a, b) => b[1] - a[1])[0];
     if (topSector && topSector[1] >= factor.thresholds.low) {
       const sectorTickers = holdings
         .filter((h) => h.sector === topSector[0])
@@ -225,8 +228,15 @@ function compareToTypicalPortfolio(stats: PortfolioStats): {
 }[] {
   const comparisons = [];
 
-  // Sector concentration comparison
-  const topSectorWeight = Math.max(...Object.values(stats.sectorWeights));
+  // Exclude "Unknown" sector from sector comparisons since those stocks may not be related
+  const knownSectorWeights = Object.entries(stats.sectorWeights)
+    .filter(([sector]) => sector !== "Unknown")
+    .map(([, weight]) => weight);
+
+  // Sector concentration comparison (excluding Unknown)
+  const topSectorWeight = knownSectorWeights.length > 0 
+    ? Math.max(...knownSectorWeights) 
+    : 0;
   comparisons.push({
     metric: "Top Sector Weight",
     yourValue: `${topSectorWeight.toFixed(1)}%`,
@@ -252,10 +262,11 @@ function compareToTypicalPortfolio(stats: PortfolioStats): {
           : ("similar" as const),
   });
 
-  // Number of holdings
-  const holdingCount = stats.holdings.length;
+  // Number of holdings (count only holdings with known sectors for diversification)
+  const knownSectorHoldings = stats.holdings.filter(h => h.sector !== "Unknown").length;
+  const holdingCount = knownSectorHoldings > 0 ? knownSectorHoldings : stats.holdings.length;
   comparisons.push({
-    metric: "Number of Holdings",
+    metric: "Holdings (Known Sectors)",
     yourValue: `${holdingCount}`,
     typical: "15-30",
     assessment:

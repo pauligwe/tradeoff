@@ -1,238 +1,197 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-
 interface IntroPageProps {
   onGetStarted: () => void;
 }
 
 export function IntroPage({ onGetStarted }: IntroPageProps) {
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-2">Welcome to TradeOff</h2>
-        <p className="text-[#858687]">
-          Bridge your stock portfolio with prediction markets to hedge risk and
-          amplify your edge.
-        </p>
-      </div>
+    <div className="max-w-[1000px] mx-auto px-6 py-16">
+      {/* Hero Card */}
+      <div className="border border-[#2d3139] bg-[#1c2026] mb-8">
+        <div className="border-b border-[#2d3139] p-6">
+          <h1 className="text-3xl font-semibold mb-2">
+            Hedge stock portfolios using prediction markets
+          </h1>
+          <p className="text-[#858687] text-sm">
+            Traditional hedging (options, shorts) is complex and expensive. TradeOff uses AI to match your portfolio risks with prediction market bets that pay out when real-world events hurt your holdings.
+          </p>
+        </div>
 
-      {/* Value Props */}
-      <div className="grid md:grid-cols-3 gap-4">
-        <Card className="bg-[#1c2026] border-[#2d3139]">
-          <CardContent className="p-5">
-            <div className="w-10 h-10 rounded-lg bg-[rgba(63,185,80,0.15)] flex items-center justify-center mb-3">
-              <svg
-                className="w-5 h-5 text-[#3fb950]"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <h3 className="font-medium text-white mb-2">Hedge Your Risk</h3>
-            <p className="text-sm text-[#858687]">
-              Own NVDA? Bet on &quot;AI regulation passes&quot; to protect
-              against downside. If regulation hurts your stock, your bet pays
-              out.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-[#1c2026] border-[#2d3139]">
-          <CardContent className="p-5">
-            <div className="w-10 h-10 rounded-lg bg-[rgba(63,185,80,0.15)] flex items-center justify-center mb-3">
-              <svg
-                className="w-5 h-5 text-[#3fb950]"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 6v6l4 2" />
-              </svg>
-            </div>
-            <h3 className="font-medium text-white mb-2">Real-Time Markets</h3>
-            <p className="text-sm text-[#858687]">
-              Prediction markets price events 24/7. No waiting for earnings
-              calls—trade on news as it happens.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-[#1c2026] border-[#2d3139]">
-          <CardContent className="p-5">
-            <div className="w-10 h-10 rounded-lg bg-[rgba(63,185,80,0.15)] flex items-center justify-center mb-3">
-              <svg
-                className="w-5 h-5 text-[#3fb950]"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <h3 className="font-medium text-white mb-2">Asymmetric Returns</h3>
-            <p className="text-sm text-[#858687]">
-              Binary outcomes mean you know your max loss upfront. Risk $50 to
-              make $200 if you&apos;re right.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Stocks vs Prediction Markets */}
-      <Card className="bg-[#1c2026] border-[#2d3139]">
-        <CardContent className="p-5">
-          <h3 className="font-medium text-white mb-4">
-            Stocks vs Prediction Markets
-          </h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <p className="text-sm text-[#858687] mb-3">
-                <span className="text-white font-medium">Stocks</span> are
-                ownership. You&apos;re betting the company grows. But what if an
-                event tanks the whole sector?
-              </p>
-              <p className="text-sm text-[#858687]">
-                <span className="text-white font-medium">
-                  Prediction markets
-                </span>{" "}
-                let you bet on the events themselves. Decouple your portfolio
-                from any single outcome.
-              </p>
-            </div>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-[#3fb950] flex items-center justify-center shrink-0 mt-0.5">
-                  <svg
-                    className="w-3 h-3 text-white"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                  >
-                    <path
-                      d="M5 13l4 4L19 7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <p className="text-sm text-[#858687]">
-                  <span className="text-white">No leverage risk</span>—you
-                  can&apos;t lose more than your bet
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-[#3fb950] flex items-center justify-center shrink-0 mt-0.5">
-                  <svg
-                    className="w-3 h-3 text-white"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                  >
-                    <path
-                      d="M5 13l4 4L19 7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <p className="text-sm text-[#858687]">
-                  <span className="text-white">Clear resolution</span>—markets
-                  settle at $1 or $0
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-[#3fb950] flex items-center justify-center shrink-0 mt-0.5">
-                  <svg
-                    className="w-3 h-3 text-white"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                  >
-                    <path
-                      d="M5 13l4 4L19 7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <p className="text-sm text-[#858687]">
-                  <span className="text-white">Trade your thesis</span>—bet on
-                  what you actually believe
-                </p>
-              </div>
-            </div>
+        <div className="grid grid-cols-2">
+          <div className="border-r border-[#2d3139] p-6">
+            <div className="text-xs text-[#858687] mb-3">THE PROBLEM</div>
+            <ul className="space-y-2 text-sm text-[#858687]">
+              <li className="flex gap-2">
+                <span className="text-[#f85149]">—</span>
+                <span>Options require specialized knowledge</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#f85149]">—</span>
+                <span>Shorting has unlimited downside risk</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#f85149]">—</span>
+                <span>Traditional hedges are expensive and illiquid</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#f85149]">—</span>
+                <span>Most investors leave portfolios unprotected</span>
+              </li>
+            </ul>
           </div>
-        </CardContent>
-      </Card>
+
+          <div className="p-6">
+            <div className="text-xs text-[#858687] mb-3">THE SOLUTION</div>
+            <ul className="space-y-2 text-sm text-[#858687]">
+              <li className="flex gap-2">
+                <span className="text-[#3fb950]">—</span>
+                <span>Bet directly on events affecting your holdings</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#3fb950]">—</span>
+                <span>Capped downside (know exactly what you risk)</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#3fb950]">—</span>
+                <span>24/7 liquidity on Polymarket</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#3fb950]">—</span>
+                <span>AI-powered risk analysis and recommendations</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       {/* How It Works */}
-      <Card className="bg-[#1c2026] border-[#2d3139]">
-        <CardContent className="p-5">
-          <h3 className="font-medium text-white mb-4">How It Works</h3>
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="text-center">
-              <div className="w-8 h-8 rounded-full bg-[#252932] flex items-center justify-center mx-auto mb-2 text-sm font-medium text-white">
-                1
+      <div className="border border-[#2d3139] bg-[#1c2026] mb-8">
+        <div className="border-b border-[#2d3139] px-6 py-4">
+          <div className="text-xs text-[#858687]">HOW IT WORKS</div>
+        </div>
+        <div className="p-6">
+          <div className="space-y-6">
+            <div className="flex gap-4">
+              <div className="w-[40px] h-[40px] border border-[#2d3139] bg-[#0d1117] flex items-center justify-center font-semibold mono shrink-0">
+                01
               </div>
-              <p className="text-sm text-[#858687]">
-                Upload your portfolio or connect your brokerage
-              </p>
+              <div className="flex-1">
+                <div className="font-semibold mb-1">Upload Portfolio</div>
+                <div className="text-sm text-[#858687]">
+                  Add your stock holdings (ticker, shares, price). System calculates total value and sector exposure.
+                </div>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="w-8 h-8 rounded-full bg-[#252932] flex items-center justify-center mx-auto mb-2 text-sm font-medium text-white">
-                2
+
+            <div className="flex gap-4">
+              <div className="w-[40px] h-[40px] border border-[#2d3139] bg-[#0d1117] flex items-center justify-center font-semibold mono shrink-0">
+                02
               </div>
-              <p className="text-sm text-[#858687]">
-                We analyze your holdings and find relevant prediction markets
-              </p>
+              <div className="flex-1">
+                <div className="font-semibold mb-1">AI Risk Analysis</div>
+                <div className="text-sm text-[#858687]">
+                  Wood Wide AI analyzes concentration risk, sector exposure, regulatory threats, and event-specific vulnerabilities.
+                </div>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="w-8 h-8 rounded-full bg-[#252932] flex items-center justify-center mx-auto mb-2 text-sm font-medium text-white">
-                3
+
+            <div className="flex gap-4">
+              <div className="w-[40px] h-[40px] border border-[#2d3139] bg-[#0d1117] flex items-center justify-center font-semibold mono shrink-0">
+                03
               </div>
-              <p className="text-sm text-[#858687]">
-                Get personalized hedge recommendations with risk analysis
-              </p>
+              <div className="flex-1">
+                <div className="font-semibold mb-1">Get Hedge Recommendations</div>
+                <div className="text-sm text-[#858687]">
+                  Receive specific prediction market bets that hedge your risks. Each recommendation shows allocation size, confidence level, and reasoning.
+                </div>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="w-8 h-8 rounded-full bg-[#252932] flex items-center justify-center mx-auto mb-2 text-sm font-medium text-white">
-                4
+
+            <div className="flex gap-4">
+              <div className="w-[40px] h-[40px] border border-[#2d3139] bg-[#0d1117] flex items-center justify-center font-semibold mono shrink-0">
+                04
               </div>
-              <p className="text-sm text-[#858687]">
-                Execute bets on Polymarket to protect your portfolio
-              </p>
+              <div className="flex-1">
+                <div className="font-semibold mb-1">Execute on Polymarket</div>
+                <div className="text-sm text-[#858687]">
+                  Place bets on Polymarket. If adverse events occur, your prediction market positions pay out, offsetting stock losses.
+                </div>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* CTA */}
-      <div className="flex justify-center pt-4">
+      {/* Why Prediction Markets */}
+      <div className="border border-[#2d3139] bg-[#1c2026] mb-8">
+        <div className="border-b border-[#2d3139] px-6 py-4">
+          <div className="text-xs text-[#858687]">WHY PREDICTION MARKETS</div>
+        </div>
+        <div className="divide-y divide-[#2d3139]">
+          <div className="p-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <div className="font-semibold mb-1">Capped Downside</div>
+                <div className="text-sm text-[#858687]">
+                  Maximum loss is your bet amount. No infinite losses like traditional shorts.
+                </div>
+              </div>
+              <div className="text-[#3fb950] mono text-sm">CRITICAL</div>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <div className="font-semibold mb-1">Binary Outcomes</div>
+                <div className="text-sm text-[#858687]">
+                  Clear yes/no events. Either it happens or it doesn&apos;t. Simple to understand and price.
+                </div>
+              </div>
+              <div className="text-[#3fb950] mono text-sm">CRITICAL</div>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <div className="font-semibold mb-1">Event-Specific Hedging</div>
+                <div className="text-sm text-[#858687]">
+                  Hedge against actual events you&apos;re worried about (regulation, bans, lawsuits) not just price movements.
+                </div>
+              </div>
+              <div className="text-[#3fb950] mono text-sm">CRITICAL</div>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <div className="font-semibold mb-1">24/7 Liquidity</div>
+                <div className="text-sm text-[#858687]">
+                  Trade anytime. Exit positions when you want. No waiting for market hours or option expiry.
+                </div>
+              </div>
+              <div className="text-[#858687] mono text-sm">HIGH</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Button */}
+      <div className="flex justify-center">
         <button
           onClick={onGetStarted}
-          className="px-6 py-3 bg-[#3fb950] hover:bg-[#4ac95f] text-white font-medium rounded-lg transition-colors"
+          className="bg-[#3fb950] text-white px-12 py-4 font-semibold hover:brightness-110 transition-all border border-[#3fb950]"
         >
-          Get Started
+          GET STARTED →
         </button>
+      </div>
+
+      {/* Disclaimer */}
+      <div className="mt-8 text-center text-xs text-[#858687] border border-[#2d3139] p-4 bg-[#0d1117]">
+        TradeOff is an educational tool. Not financial advice. Prediction market betting involves risk. Only bet what you can afford to lose.
       </div>
     </div>
   );

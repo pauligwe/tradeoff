@@ -1,10 +1,24 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { X } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { PortfolioInput } from "@/components/PortfolioInput";
-import { PortfolioTable } from "@/components/PortfolioTable";
-import { PortfolioCharts } from "@/components/PortfolioCharts";
 import type { PortfolioItem, StockInfo } from "@/app/page";
+
+// Color palette for sectors
+const SECTOR_COLORS = [
+  "#3fb950", // green
+  "#58a6ff", // blue
+  "#f85149", // red
+  "#fb8500", // orange
+  "#fbbf24", // yellow
+  "#a371f7", // purple
+  "#56d4dd", // cyan
+  "#f778ba", // pink
+  "#7ee787", // light green
+  "#79c0ff", // light blue
+];
 
 interface PortfolioViewProps {
   portfolio: PortfolioItem[];
@@ -66,66 +80,229 @@ export function PortfolioView({
     return sum + (info?.price || 0) * p.shares;
   }, 0);
 
-  return (
-    <div className="space-y-6">
-      {portfolio.length === 0 ? (
-        <div className="bg-card border border-border rounded-lg p-6">
-          <h2 className="text-lg font-medium mb-6">Add Your Portfolio</h2>
+  // Calculate sector breakdown
+  const sectorBreakdown = portfolio.reduce((acc, p) => {
+    const info = stockInfo[p.ticker];
+    if (info) {
+      const value = info.price * p.shares;
+      const sector = info.sector || "Unknown";
+      acc[sector] = (acc[sector] || 0) + value;
+    }
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Prepare data for pie chart
+  const pieData = Object.entries(sectorBreakdown)
+    .sort((a, b) => b[1] - a[1])
+    .map(([sector, value], index) => ({
+      name: sector,
+      value,
+      percentage: (value / totalValue) * 100,
+      color: SECTOR_COLORS[index % SECTOR_COLORS.length],
+    }));
+
+  if (portfolio.length === 0) {
+    return (
+      <div className="max-w-[1400px] mx-auto px-6 py-8">
+        <div className="bg-[#1c2026] border border-[#2d3139] p-6">
+          <h2 className="font-semibold mb-6">Add Your Portfolio</h2>
           <PortfolioInput
             portfolio={portfolio}
             setPortfolio={setPortfolio}
           />
         </div>
-      ) : (
-        <>
-          {/* Summary Card */}
-          <div className="bg-card border border-border rounded-lg p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Portfolio Value</p>
-                <p className="text-3xl font-semibold font-mono">
-                  ${totalValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-[1400px] mx-auto px-6 py-8">
+      {/* Summary Header */}
+      <div className="bg-[#1c2026] border border-[#2d3139] p-6 mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-sm text-[#858687] mb-1">TOTAL PORTFOLIO VALUE</h2>
+            <div className="text-3xl font-semibold mono">
+              ${totalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
+          </div>
+          <div className="text-right">
+            <h2 className="text-sm text-[#858687] mb-1">HOLDINGS</h2>
+            <div className="text-3xl font-semibold mono">{portfolio.length}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Sector Breakdown & Top Holdings */}
+      <div className="grid grid-cols-2 gap-6 mb-6">
+        {/* Sector Breakdown - Pie Chart Only */}
+        {Object.keys(sectorBreakdown).length > 0 && (
+          <div className="bg-[#1c2026] border border-[#2d3139] p-6">
+            <h3 className="font-semibold mb-4">Sector Breakdown</h3>
+            <div className="flex items-center gap-6">
+              <div className="w-48 h-48 shrink-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={pieData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={40}
+                      outerRadius={70}
+                      paddingAngle={2}
+                      dataKey="value"
+                    >
+                      {pieData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} stroke="#0d1117" strokeWidth={2} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload;
+                          return (
+                            <div className="bg-[#1c2026] border border-[#2d3139] px-3 py-2 text-sm">
+                              <p className="font-medium">{data.name}</p>
+                              <p className="text-[#858687]">{data.percentage.toFixed(1)}%</p>
+                              <p className="mono text-xs">${data.value.toLocaleString()}</p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
               </div>
-              <div className="text-right">
-                <p className="text-sm text-muted-foreground">Holdings</p>
-                <p className="text-3xl font-semibold">{portfolio.length}</p>
+              <div className="flex-1 space-y-2">
+                {pieData.map((sector) => (
+                  <div key={sector.name} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div 
+                        className="w-3 h-3 shrink-0" 
+                        style={{ backgroundColor: sector.color }}
+                      />
+                      <span className="text-sm">{sector.name}</span>
+                    </div>
+                    <span className="text-sm mono text-[#858687]">{sector.percentage.toFixed(1)}%</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
+        )}
 
-          {/* Charts */}
-          <PortfolioCharts portfolio={portfolio} stockInfo={stockInfo} />
-
-          {/* Add more stocks - MOVED ABOVE holdings */}
-          <div className="bg-card border border-border rounded-lg p-4">
-            <PortfolioInput
-              portfolio={portfolio}
-              setPortfolio={setPortfolio}
-              compact
-            />
+        {/* Top Holdings */}
+        <div className="bg-[#1c2026] border border-[#2d3139] p-6">
+          <h3 className="font-semibold mb-4">Top Holdings</h3>
+          <div className="space-y-3">
+            {portfolio
+              .map((item) => {
+                const info = stockInfo[item.ticker];
+                const value = (info?.price || 0) * item.shares;
+                const percentage = totalValue > 0 ? (value / totalValue) * 100 : 0;
+                return { ...item, info, value, percentage };
+              })
+              .sort((a, b) => b.value - a.value)
+              .slice(0, 5)
+              .map((item, index) => (
+                <div key={item.ticker}>
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-[#858687] w-4">{index + 1}</span>
+                      <span className="font-semibold mono">{item.ticker}</span>
+                      <span className="text-sm text-[#858687] truncate max-w-[120px]">
+                        {item.info?.name || ""}
+                      </span>
+                    </div>
+                    <span className="text-sm mono">{item.percentage.toFixed(1)}%</span>
+                  </div>
+                  <div className="h-2 bg-[#0d1117] border border-[#2d3139] ml-7">
+                    <div
+                      className="h-full bg-[#3fb950]"
+                      style={{ width: `${item.percentage}%` }}
+                    />
+                  </div>
+                  <div className="text-xs text-[#858687] mt-0.5 ml-7 mono">
+                    ${item.value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </div>
+                </div>
+              ))}
           </div>
+        </div>
+      </div>
 
-          {/* Holdings Table */}
-          <div className="bg-card border border-border rounded-lg overflow-hidden">
-            <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-              <h2 className="font-medium">Holdings</h2>
-              <button
-                onClick={() => setPortfolio([])}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Clear all
-              </button>
-            </div>
-            <PortfolioTable
-              portfolio={portfolio}
-              stockInfo={stockInfo}
-              onRemove={handleRemove}
-              isLoading={isLoadingStocks}
-            />
-          </div>
-        </>
-      )}
+      {/* Add Stock */}
+      <div className="bg-[#1c2026] border border-[#2d3139] p-6 mb-6">
+        <h3 className="font-semibold mb-4">Add Stock</h3>
+        <PortfolioInput
+          portfolio={portfolio}
+          setPortfolio={setPortfolio}
+          compact
+        />
+      </div>
+
+      {/* Holdings Table */}
+      <div className="bg-[#1c2026] border border-[#2d3139] p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold">Holdings</h3>
+          <button
+            onClick={() => setPortfolio([])}
+            className="text-sm text-[#858687] hover:text-white transition-colors"
+          >
+            Clear all
+          </button>
+        </div>
+        <table className="table-sharp">
+          <thead>
+            <tr>
+              <th>TICKER</th>
+              <th>NAME</th>
+              <th className="text-right">SHARES</th>
+              <th className="text-right">PRICE</th>
+              <th className="text-right">VALUE</th>
+              <th className="text-right">% OF PORTFOLIO</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {portfolio.map((item) => {
+              const info = stockInfo[item.ticker];
+              const value = (info?.price || 0) * item.shares;
+              const percentage = totalValue > 0 ? (value / totalValue) * 100 : 0;
+              
+              return (
+                <tr key={item.ticker}>
+                  <td className="font-semibold mono">{item.ticker}</td>
+                  <td className="text-[#858687]">
+                    {isLoadingStocks && !info ? (
+                      <span className="animate-pulse">Loading...</span>
+                    ) : (
+                      info?.name || "Unknown"
+                    )}
+                  </td>
+                  <td className="text-right mono">{item.shares.toLocaleString()}</td>
+                  <td className="text-right mono">
+                    {info ? `$${info.price.toFixed(2)}` : "—"}
+                  </td>
+                  <td className="text-right mono">
+                    ${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </td>
+                  <td className="text-right mono">{percentage.toFixed(1)}%</td>
+                  <td className="text-right">
+                    <button
+                      onClick={() => handleRemove(item.ticker)}
+                      className="text-[#858687] hover:text-[#f85149] transition-colors p-1"
+                    >
+                      <X size={16} />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

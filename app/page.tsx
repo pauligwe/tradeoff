@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { TabNav, type TabType } from "@/components/TabNav";
+import { Sidebar, type PageType } from "@/components/Sidebar";
 import { PortfolioView } from "@/components/portfolio/PortfolioView";
 import { HedgeView } from "@/components/hedge/HedgeView";
 import { RiskView } from "@/components/risk/RiskView";
@@ -95,7 +95,7 @@ export interface RiskAnalysisResult {
 }
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<TabType>("intro");
+  const [activePage, setActivePage] = useState<PageType>("intro");
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
   const [stockInfo, setStockInfo] = useState<Record<string, StockInfo>>({});
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
@@ -274,49 +274,14 @@ export default function Home() {
   }, [portfolio, analysisResult, preloadAllTabs]);
 
   return (
-    <div className="min-h-screen bg-[#12161c] flex flex-col">
-      {/* Header */}
-      <header className="bg-[#12161c] border-b border-[#2d3139]">
-        <div className="max-w-[1400px] mx-auto px-6 py-4">
-          <div className="flex items-center justify-center gap-6">
-            {/* Logo */}
-            <button
-              onClick={() => setActiveTab("intro")}
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <svg
-                className="w-6 h-6 text-[#3fb950]"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path d="M2 17l10 5 10-5" />
-                <path d="M2 12l10 5 10-5" />
-              </svg>
-              <h1 className="text-xl font-bold">
-                <span className="text-white">Trade</span>
-                <span className="text-[#3fb950]">Off</span>
-              </h1>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Tab Navigation */}
-      <div className="bg-[#12161c] border-b border-[#2d3139] sticky top-0 z-50">
-        <div className="max-w-[1400px] mx-auto px-6 py-3 flex justify-center">
-          <TabNav activeTab={activeTab} onTabChange={setActiveTab} />
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <main className="flex-1 max-w-[1400px] w-full mx-auto px-4 py-6">
-        {activeTab === "intro" && (
-          <IntroPage onGetStarted={() => setActiveTab("portfolio")} />
+    <div className="min-h-screen bg-[#0d1117]">
+      <Sidebar activePage={activePage} onNavigate={setActivePage} />
+      
+      <main className="ml-[200px]">
+        {activePage === "intro" && (
+          <IntroPage onGetStarted={() => setActivePage("portfolio")} />
         )}
-        {activeTab === "portfolio" && (
+        {activePage === "portfolio" && (
           <PortfolioView
             portfolio={portfolio}
             setPortfolio={setPortfolio}
@@ -324,28 +289,28 @@ export default function Home() {
             setStockInfo={setStockInfo}
           />
         )}
-        {activeTab === "hedges" && (
+        {activePage === "hedges" && (
           <HedgeView
             portfolio={portfolio}
             setPortfolio={setPortfolio}
             stockInfo={stockInfo}
             analysisResult={analysisResult}
             setAnalysisResult={setAnalysisResult}
-            onGoToNews={() => setActiveTab("news")}
+            onGoToNews={() => setActivePage("news")}
             onBetSelect={handleBetSelect}
             isPreloaded={analysisResult !== null}
           />
         )}
-        {activeTab === "risks" && (
+        {activePage === "risks" && (
           <RiskView
             portfolio={portfolio}
             stockInfo={stockInfo}
             hedges={analysisResult?.recommendations || []}
-            onGoToHedges={() => setActiveTab("hedges")}
+            onGoToHedges={() => setActivePage("hedges")}
             preloadedResult={riskAnalysisResult}
           />
         )}
-        {activeTab === "news" && (
+        {activePage === "news" && (
           <NewsView
             portfolio={portfolio}
             stockInfo={stockInfo}
@@ -356,7 +321,7 @@ export default function Home() {
             isPreloaded={cachedArticles.length > 0}
           />
         )}
-        {activeTab === "greeks" && (
+        {activePage === "greeks" && (
           <GreeksView
             recommendations={analysisResult?.recommendations || []}
             stockInfo={stockInfo}
