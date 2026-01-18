@@ -9,6 +9,7 @@ export interface HedgeRecommendation {
   suggestedAllocation: number;
   affectedStocks: string[]; // All stocks this hedge affects
   confidence: "high" | "medium";
+  endDate?: string; // ISO date string for market resolution
 }
 
 export interface AnalysisResponse {

@@ -34,6 +34,7 @@ export interface HedgeRecommendation {
   suggestedAllocation: number;
   affectedStocks: string[];
   confidence: "high" | "medium";
+  endDate?: string; // ISO date string for market resolution
 }
 
 export interface AnalysisResult {

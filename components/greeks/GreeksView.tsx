@@ -15,8 +15,22 @@ interface GreeksViewProps {
 export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 50000 }: GreeksViewProps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [customShares, setCustomShares] = useState(100);
-  const [customDays, setCustomDays] = useState(30);
   const [showEducation, setShowEducation] = useState(true);
+  
+  // Calculate days to resolution from endDate
+  const calculateDaysToResolution = (endDate?: string): number => {
+    if (!endDate) return 30; // Default fallback
+    
+    try {
+      const end = new Date(endDate);
+      const now = new Date();
+      const diffTime = end.getTime() - now.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return Math.max(0, diffDays); // Don't return negative days
+    } catch {
+      return 30; // Fallback if date parsing fails
+    }
+  };
 
   // No recommendations yet
   if (recommendations.length === 0) {
@@ -61,6 +75,7 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
   const entryPrice = selected.position === "YES" ? selected.probability : (1 - selected.probability);
   const shares = customShares;
   const cost = shares * entryPrice;
+  const daysToResolution = calculateDaysToResolution(selected.endDate);
 
   // Calculate metrics
   const maxProfit = shares * (1 - entryPrice);
@@ -215,13 +230,14 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
             </div>
             <div>
               <label className="text-xs text-[#858687] block mb-1">Days to resolution</label>
-              <Input
-                type="number"
-                value={customDays}
-                onChange={(e) => setCustomDays(Number(e.target.value) || 30)}
-                className="w-full"
-                min={1}
-              />
+              <div className="w-full px-3 py-2 bg-[#252932] rounded border border-[#2d3139] text-white">
+                {daysToResolution} {daysToResolution === 1 ? 'day' : 'days'}
+              </div>
+              {selected.endDate && (
+                <p className="text-xs text-[#858687] mt-1">
+                  Resolves: {new Date(selected.endDate).toLocaleDateString()}
+                </p>
+              )}
             </div>
             <div className="text-right">
               <p className="text-xs text-[#858687] mb-1">Total cost</p>

@@ -105,7 +105,7 @@ TASK: For each stock above, find ONE direct hedge if a good one exists. Skip sto
     // Analyze
     const analysis = await analyzeWithGrok(compressedContext, groqApiKey);
 
-    // Add market URLs
+    // Add market URLs and end dates
     const recommendationsWithUrls = analysis.recommendations.map((rec) => {
       const matchedEvent = findEventByKeywords(events, rec.market);
       
@@ -114,6 +114,7 @@ TASK: For each stock above, find ONE direct hedge if a good one exists. Skip sto
         marketUrl: matchedEvent 
           ? getEventUrl(matchedEvent.slug)
           : `https://polymarket.com/markets?_q=${encodeURIComponent(rec.market.slice(0, 30))}`,
+        endDate: matchedEvent?.endDate || undefined,
       };
     });
 
