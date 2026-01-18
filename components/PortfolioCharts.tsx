@@ -8,18 +8,18 @@ interface PortfolioChartsProps {
   stockInfo: Record<string, StockInfo>;
 }
 
-// Color palette for charts
+// Polymarket-inspired color palette
 const COLORS = [
-  "#0d9488", // teal (accent)
-  "#3b82f6", // blue
-  "#8b5cf6", // purple
-  "#ec4899", // pink
-  "#f59e0b", // amber
-  "#10b981", // emerald
-  "#6366f1", // indigo
-  "#ef4444", // red
-  "#06b6d4", // cyan
-  "#84cc16", // lime
+  "#3fb950", // Polymarket green
+  "#58a6ff", // Polymarket blue
+  "#a371f7", // purple
+  "#f0883e", // orange
+  "#f778ba", // pink
+  "#3fb950", // green
+  "#58a6ff", // blue
+  "#f85149", // Polymarket red
+  "#56d4dd", // cyan
+  "#7ee787", // light green
 ];
 
 export function PortfolioCharts({ portfolio, stockInfo }: PortfolioChartsProps) {
@@ -68,8 +68,8 @@ export function PortfolioCharts({ portfolio, stockInfo }: PortfolioChartsProps) 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Sector Breakdown */}
-      <div className="bg-card border border-border rounded-lg p-4">
-        <h3 className="text-sm font-medium mb-4">Sector Exposure</h3>
+      <div className="bg-[#1c2026] border border-[#2d3139] rounded-xl p-4">
+        <h3 className="text-sm font-medium mb-4 text-white">Sector Exposure</h3>
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -95,9 +95,9 @@ export function PortfolioCharts({ portfolio, stockInfo }: PortfolioChartsProps) 
                   if (active && payload && payload.length) {
                     const data = payload[0].payload;
                     return (
-                      <div className="bg-popover border border-border rounded px-3 py-2 text-sm">
-                        <p className="font-medium">{data.fullName}</p>
-                        <p className="text-muted-foreground">
+                      <div className="bg-[#1c2026] border border-[#2d3139] rounded-lg px-3 py-2 text-sm shadow-lg">
+                        <p className="font-medium text-white">{data.fullName}</p>
+                        <p className="text-[#858687]">
                           ${data.value.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                           {" "}({data.percentage.toFixed(1)}%)
                         </p>
@@ -127,8 +127,8 @@ export function PortfolioCharts({ portfolio, stockInfo }: PortfolioChartsProps) 
       </div>
 
       {/* Top Holdings */}
-      <div className="bg-card border border-border rounded-lg p-4">
-        <h3 className="text-sm font-medium mb-4">Top Holdings</h3>
+      <div className="bg-[#1c2026] border border-[#2d3139] rounded-xl p-4">
+        <h3 className="text-sm font-medium mb-4 text-white">Top Holdings</h3>
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -150,9 +150,9 @@ export function PortfolioCharts({ portfolio, stockInfo }: PortfolioChartsProps) 
                   if (active && payload && payload.length) {
                     const data = payload[0].payload;
                     return (
-                      <div className="bg-popover border border-border rounded px-3 py-2 text-sm">
-                        <p className="font-mono font-medium">{data.ticker}</p>
-                        <p className="text-muted-foreground">
+                      <div className="bg-[#1c2026] border border-[#2d3139] rounded-lg px-3 py-2 text-sm shadow-lg">
+                        <p className="font-mono font-medium text-white">{data.ticker}</p>
+                        <p className="text-[#858687]">
                           ${data.value.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                           {" "}({data.percentage.toFixed(1)}%)
                         </p>
@@ -164,7 +164,7 @@ export function PortfolioCharts({ portfolio, stockInfo }: PortfolioChartsProps) 
               />
               <Bar
                 dataKey="percentage"
-                fill="#0d9488"
+                fill="#3fb950"
                 radius={[0, 4, 4, 0]}
                 barSize={16}
               />

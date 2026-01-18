@@ -33,23 +33,83 @@ export function HedgeCard({ recommendation, stockInfo = {}, onBetSelect }: Hedge
     }
   };
 
+  // Calculate potential payoff
+  const entryPrice = position === "YES" ? probability : (1 - probability);
+  const maxProfit = suggestedAllocation * ((1 - entryPrice) / entryPrice);
+  const maxLoss = suggestedAllocation;
+
   return (
-    <Card className="bg-card border-border">
+    <Card className="bg-[#1c2026] border-[#2d3139] hover:border-[#3d4149] transition-colors">
       <CardContent className="p-5 space-y-4">
+        {/* Market Title & Probability */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <a
+              href={marketUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white hover:text-[#3fb950] transition-colors font-medium inline-flex items-start gap-1"
+            >
+              <span className="line-clamp-2">{market}</span>
+              <span className="text-[#858687] hover:text-[#3fb950] shrink-0 text-sm">↗</span>
+            </a>
+          </div>
+          <div className="text-right shrink-0">
+            <span className="text-2xl font-bold text-white">{currentOdds}%</span>
+            <p className="text-xs text-[#858687]">chance</p>
+          </div>
+        </div>
+
+        {/* Yes/No Buttons - Polymarket Style */}
+        <div className="flex gap-2">
+          <button
+            className={`flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all ${
+              position === "YES"
+                ? "bg-[rgba(63,185,80,0.2)] text-[#3fb950] border-2 border-[#3fb950]"
+                : "bg-[rgba(63,185,80,0.1)] text-[#3fb950] border border-[rgba(63,185,80,0.3)] opacity-50"
+            }`}
+          >
+            Yes {Math.round(probability * 100)}¢
+          </button>
+          <button
+            className={`flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all ${
+              position === "NO"
+                ? "bg-[rgba(248,81,73,0.2)] text-[#f85149] border-2 border-[#f85149]"
+                : "bg-[rgba(248,81,73,0.1)] text-[#f85149] border border-[rgba(248,81,73,0.3)] opacity-50"
+            }`}
+          >
+            No {Math.round((1 - probability) * 100)}¢
+          </button>
+        </div>
+
+        {/* Payoff Summary */}
+        <div className="grid grid-cols-3 gap-3 p-3 bg-[#12161c] rounded-lg">
+          <div>
+            <p className="text-xs text-[#858687]">Position</p>
+            <p className="font-mono font-semibold text-white">${suggestedAllocation}</p>
+          </div>
+          <div>
+            <p className="text-xs text-[#858687]">If Win</p>
+            <p className="font-mono font-semibold text-[#3fb950]">+${maxProfit.toFixed(0)}</p>
+          </div>
+          <div>
+            <p className="text-xs text-[#858687]">If Lose</p>
+            <p className="font-mono font-semibold text-[#f85149]">-${maxLoss}</p>
+          </div>
+        </div>
+
         {/* Affected Stocks */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm text-muted-foreground">
-            Hedges {stockCount} stock{stockCount !== 1 ? "s" : ""}:
-          </span>
+          <span className="text-xs text-[#858687]">Hedges:</span>
           {affectedStocks.map((ticker) => {
             const info = stockInfo[ticker];
             return (
               <div key={ticker} className="group relative">
-                <span className="px-2 py-0.5 rounded bg-accent/15 text-accent font-mono text-sm border border-accent/20">
+                <span className="px-2 py-0.5 rounded bg-[#252932] text-[#58a6ff] font-mono text-xs border border-[#2d3139]">
                   {ticker}
                 </span>
                 {info && (
-                  <span className="absolute hidden group-hover:block bottom-full left-0 mb-1 px-2 py-1 bg-popover border border-border rounded text-xs whitespace-nowrap z-10">
+                  <span className="absolute hidden group-hover:block bottom-full left-0 mb-1 px-2 py-1 bg-[#1c2026] border border-[#2d3139] rounded text-xs whitespace-nowrap z-10 text-white">
                     {info.name}
                   </span>
                 )}
@@ -58,48 +118,13 @@ export function HedgeCard({ recommendation, stockInfo = {}, onBetSelect }: Hedge
           })}
         </div>
 
-        {/* Market & Bet Info */}
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <a
-              href={marketUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-accent transition-colors font-medium inline-flex items-start gap-1"
-            >
-              <span className="line-clamp-2">{market}</span>
-              <span className="text-muted-foreground hover:text-accent shrink-0">↗</span>
-            </a>
-          </div>
-          <div className="text-right shrink-0">
-            <span className="text-2xl font-mono font-semibold">{currentOdds}%</span>
-            <p className="text-xs text-muted-foreground">odds</p>
-          </div>
-        </div>
-
-        {/* Outcome to bet on */}
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-muted-foreground">Bet:</span>
-          <span
-            className={`px-3 py-1 rounded text-sm font-medium ${
-              position === "YES"
-                ? "bg-green-500/20 text-green-400"
-                : "bg-red-500/20 text-red-400"
-            }`}
-          >
-            {position} on &quot;{outcome}&quot;
-          </span>
-          <span className="text-sm text-muted-foreground">•</span>
-          <span className="text-sm font-mono">${suggestedAllocation}</span>
-        </div>
-
         {/* Reasoning + News Link */}
-        <div className="flex items-end justify-between gap-4">
-          <p className="text-sm text-muted-foreground flex-1">{reasoning}</p>
+        <div className="flex items-end justify-between gap-4 pt-2 border-t border-[#2d3139]">
+          <p className="text-sm text-[#858687] flex-1">{reasoning}</p>
           {onBetSelect && (
             <button
               onClick={handleNewsClick}
-              className="text-xs text-muted-foreground hover:text-accent transition-colors flex items-center gap-1 shrink-0"
+              className="text-xs text-[#858687] hover:text-[#3fb950] transition-colors flex items-center gap-1 shrink-0"
             >
               <Newspaper className="w-3 h-3" />
               <span>News</span>
