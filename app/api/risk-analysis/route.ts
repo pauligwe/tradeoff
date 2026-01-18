@@ -262,11 +262,10 @@ function compareToTypicalPortfolio(stats: PortfolioStats): {
           : ("similar" as const),
   });
 
-  // Number of holdings (count only holdings with known sectors for diversification)
-  const knownSectorHoldings = stats.holdings.filter(h => h.sector !== "Unknown").length;
-  const holdingCount = knownSectorHoldings > 0 ? knownSectorHoldings : stats.holdings.length;
+  // Number of holdings (include all stocks regardless of sector)
+  const holdingCount = stats.holdings.length;
   comparisons.push({
-    metric: "Holdings (Known Sectors)",
+    metric: "Number of Holdings",
     yourValue: `${holdingCount}`,
     typical: "15-30",
     assessment:

@@ -41,18 +41,30 @@ export async function fetchActiveEvents(limit: number = 50): Promise<PolymarketE
 
     const data = await response.json();
     
-    return data.map((event: Record<string, unknown>) => ({
-      id: event.id || "",
-      title: event.title || "",
-      slug: event.slug || "",
-      description: event.description || "",
-      endDate: event.endDate || "",
-      volume: parseFloat(String(event.volume)) || 0,
-      liquidity: parseFloat(String(event.liquidity)) || 0,
-      active: event.active !== false,
-      closed: event.closed === true,
-      markets: parseMarkets(event.markets),
-    }));
+    const now = new Date();
+    
+    return data
+      .map((event: Record<string, unknown>) => ({
+        id: event.id || "",
+        title: event.title || "",
+        slug: event.slug || "",
+        description: event.description || "",
+        endDate: event.endDate || "",
+        volume: parseFloat(String(event.volume)) || 0,
+        liquidity: parseFloat(String(event.liquidity)) || 0,
+        active: event.active !== false,
+        closed: event.closed === true,
+        markets: parseMarkets(event.markets),
+      }))
+      // Filter out resolved/ended events
+      .filter((event: PolymarketEvent) => {
+        // Keep if not closed
+        if (event.closed) return false;
+        // Keep if no endDate or endDate is in the future
+        if (!event.endDate) return true;
+        const endDate = new Date(event.endDate);
+        return endDate > now;
+      });
   } catch (error) {
     console.error("Error fetching Polymarket events:", error);
     return [];
@@ -76,18 +88,28 @@ export async function searchEvents(query: string, limit: number = 20): Promise<P
 
     const data = await response.json();
     
-    return data.map((event: Record<string, unknown>) => ({
-      id: event.id || "",
-      title: event.title || "",
-      slug: event.slug || "",
-      description: event.description || "",
-      endDate: event.endDate || "",
-      volume: parseFloat(String(event.volume)) || 0,
-      liquidity: parseFloat(String(event.liquidity)) || 0,
-      active: event.active !== false,
-      closed: event.closed === true,
-      markets: parseMarkets(event.markets),
-    }));
+    const now = new Date();
+    
+    return data
+      .map((event: Record<string, unknown>) => ({
+        id: event.id || "",
+        title: event.title || "",
+        slug: event.slug || "",
+        description: event.description || "",
+        endDate: event.endDate || "",
+        volume: parseFloat(String(event.volume)) || 0,
+        liquidity: parseFloat(String(event.liquidity)) || 0,
+        active: event.active !== false,
+        closed: event.closed === true,
+        markets: parseMarkets(event.markets),
+      }))
+      // Filter out resolved/ended events
+      .filter((event: PolymarketEvent) => {
+        if (event.closed) return false;
+        if (!event.endDate) return true;
+        const endDate = new Date(event.endDate);
+        return endDate > now;
+      });
   } catch (error) {
     console.error(`Error searching events for "${query}":`, error);
     return [];
@@ -264,8 +286,18 @@ export function formatEventsForContext(
   events: PolymarketEvent[],
   stocks?: { ticker: string; name: string; sector: string; industry: string }[]
 ): string {
+  const now = new Date();
+  
+  // Filter out closed/resolved events
+  const activeEvents = events.filter((e) => {
+    if (e.closed) return false;
+    if (!e.endDate) return true;
+    const endDate = new Date(e.endDate);
+    return endDate > now;
+  });
+  
   if (!stocks) {
-    return events
+    return activeEvents
       .filter((e) => e.title && e.slug)
       .slice(0, 50)
       .map((e) => {
@@ -278,7 +310,7 @@ export function formatEventsForContext(
   }
   
   // Score events by relevance to stocks
-  const scoredEvents = events.map(event => {
+  const scoredEvents = activeEvents.map(event => {
     let score = 0;
     const titleLower = event.title.toLowerCase();
     const matchedStocks: string[] = [];

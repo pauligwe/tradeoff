@@ -131,8 +131,8 @@ function parsePortfolioData(text: string): PortfolioItem[] {
       !isNaN(shares) &&
       shares > 0
     ) {
-      // Round shares to whole number
-      items.push({ ticker, shares: Math.round(shares) });
+      // Keep fractional shares for accurate value calculations
+      items.push({ ticker, shares });
     }
   }
 
@@ -307,7 +307,7 @@ export function PortfolioInput({
     if (!ticker.trim() || !shares.trim()) return;
 
     const tickerUpper = ticker.trim().toUpperCase();
-    const sharesNum = parseInt(shares, 10);
+    const sharesNum = parseFloat(shares);
 
     if (isNaN(sharesNum) || sharesNum <= 0) return;
 

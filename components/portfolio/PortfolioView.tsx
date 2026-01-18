@@ -205,29 +205,39 @@ export function PortfolioView({
               })
               .sort((a, b) => b.value - a.value)
               .slice(0, 5)
-              .map((item, index) => (
-                <div key={item.ticker}>
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs text-[#858687] w-4">{index + 1}</span>
-                      <span className="font-semibold mono">{item.ticker}</span>
-                      <span className="text-sm text-[#858687] truncate max-w-[120px]">
-                        {item.info?.name || ""}
-                      </span>
+              .map((item, index) => {
+                // Format percentage to show at least 1 significant digit
+                const formatPercentage = (pct: number) => {
+                  if (pct === 0) return "0%";
+                  if (pct >= 0.1) return `${pct.toFixed(1)}%`;
+                  if (pct >= 0.01) return `${pct.toFixed(2)}%`;
+                  return `${pct.toFixed(3)}%`;
+                };
+                
+                return (
+                  <div key={item.ticker}>
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs text-[#858687] w-4">{index + 1}</span>
+                        <span className="font-semibold mono">{item.ticker}</span>
+                        <span className="text-sm text-[#858687]">
+                          {item.info?.name || ""}
+                        </span>
+                      </div>
+                      <span className="text-sm mono shrink-0 ml-2">{formatPercentage(item.percentage)}</span>
                     </div>
-                    <span className="text-sm mono">{item.percentage.toFixed(1)}%</span>
+                    <div className="h-2 bg-[#0d1117] border border-[#2d3139] ml-7">
+                      <div
+                        className="h-full bg-[#3fb950]"
+                        style={{ width: `${Math.max(item.percentage, 0.5)}%` }}
+                      />
+                    </div>
+                    <div className="text-xs text-[#858687] mt-0.5 ml-7 mono">
+                      ${item.value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </div>
                   </div>
-                  <div className="h-2 bg-[#0d1117] border border-[#2d3139] ml-7">
-                    <div
-                      className="h-full bg-[#3fb950]"
-                      style={{ width: `${item.percentage}%` }}
-                    />
-                  </div>
-                  <div className="text-xs text-[#858687] mt-0.5 ml-7 mono">
-                    ${item.value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
           </div>
         </div>
       </div>
@@ -271,6 +281,14 @@ export function PortfolioView({
               const value = (info?.price || 0) * item.shares;
               const percentage = totalValue > 0 ? (value / totalValue) * 100 : 0;
               
+              // Format percentage to show at least 1 significant digit
+              const formatPct = (pct: number) => {
+                if (pct === 0) return "0%";
+                if (pct >= 0.1) return `${pct.toFixed(1)}%`;
+                if (pct >= 0.01) return `${pct.toFixed(2)}%`;
+                return `${pct.toFixed(3)}%`;
+              };
+              
               return (
                 <tr key={item.ticker}>
                   <td className="font-semibold mono">{item.ticker}</td>
@@ -281,14 +299,18 @@ export function PortfolioView({
                       info?.name || "Unknown"
                     )}
                   </td>
-                  <td className="text-right mono">{item.shares.toLocaleString()}</td>
+                  <td className="text-right mono">
+                    {Number.isInteger(item.shares) 
+                      ? item.shares.toLocaleString() 
+                      : item.shares.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+                  </td>
                   <td className="text-right mono">
                     {info ? `$${info.price.toFixed(2)}` : "—"}
                   </td>
                   <td className="text-right mono">
                     ${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </td>
-                  <td className="text-right mono">{percentage.toFixed(1)}%</td>
+                  <td className="text-right mono">{formatPct(percentage)}</td>
                   <td className="text-right">
                     <button
                       onClick={() => handleRemove(item.ticker)}
