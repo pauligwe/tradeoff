@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, ReferenceLine } from "recharts";
 import type { HedgeRecommendation, StockInfo } from "@/app/page";
 
 interface GreeksViewProps {
@@ -157,9 +158,9 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
       )}
 
       {/* Position Selector */}
-      <Card className="bg-card border-border">
+      <Card className="bg-[#1c2026] border-[#2d3139]">
         <CardContent className="p-4">
-          <p className="text-sm text-muted-foreground mb-3">
+          <p className="text-sm text-[#858687] mb-3">
             Select a hedge to analyze:
           </p>
           <div className="flex flex-wrap gap-2">
@@ -169,11 +170,11 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
                 onClick={() => setSelectedIdx(idx)}
                 className={`px-3 py-2 rounded-lg text-sm text-left transition-colors ${
                   selectedIdx === idx
-                    ? "bg-accent text-accent-foreground"
-                    : "bg-secondary hover:bg-secondary/80"
+                    ? "bg-[#3fb950] text-white"
+                    : "bg-[#252932] hover:bg-[#2d3139] text-white"
                 }`}
               >
-                <span className={`font-medium ${rec.position === "YES" ? "text-green-400" : "text-red-400"}`}>
+                <span className={`font-medium ${rec.position === "YES" ? "text-[#3fb950]" : "text-[#f85149]"} ${selectedIdx === idx ? "text-white" : ""}`}>
                   {rec.position}
                 </span>
                 {" "}on {rec.outcome?.slice(0, 25) || rec.market.slice(0, 25)}...
@@ -184,26 +185,26 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
       </Card>
 
       {/* Position Details */}
-      <Card className="bg-card border-border">
+      <Card className="bg-[#1c2026] border-[#2d3139]">
         <CardContent className="p-5 space-y-4">
           <div>
-            <p className="text-sm text-muted-foreground">Market:</p>
-            <p className="font-medium">{selected.market}</p>
+            <p className="text-sm text-[#858687]">Market:</p>
+            <p className="font-medium text-white">{selected.market}</p>
           </div>
 
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-muted-foreground">Your bet:</span>
+          <div className="flex items-center gap-2 text-sm flex-wrap">
+            <span className="text-[#858687]">Your bet:</span>
             <span className={`px-2 py-1 rounded font-medium ${
-              selected.position === "YES" ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
+              selected.position === "YES" ? "bg-[rgba(63,185,80,0.2)] text-[#3fb950]" : "bg-[rgba(248,81,73,0.2)] text-[#f85149]"
             }`}>
               {selected.position} on &quot;{selected.outcome}&quot;
             </span>
-            <span className="text-muted-foreground">@ {Math.round(entryPrice * 100)}¢ per share</span>
+            <span className="text-[#858687]">@ {Math.round(entryPrice * 100)}¢ per share</span>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 pt-3 border-t border-border">
+          <div className="grid grid-cols-3 gap-4 pt-3 border-t border-[#2d3139]">
             <div>
-              <label className="text-xs text-muted-foreground block mb-1">Shares</label>
+              <label className="text-xs text-[#858687] block mb-1">Shares</label>
               <Input
                 type="number"
                 value={customShares}
@@ -213,7 +214,7 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
               />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground block mb-1">Days to resolution</label>
+              <label className="text-xs text-[#858687] block mb-1">Days to resolution</label>
               <Input
                 type="number"
                 value={customDays}
@@ -223,9 +224,9 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
               />
             </div>
             <div className="text-right">
-              <p className="text-xs text-muted-foreground mb-1">Total cost</p>
-              <p className="text-2xl font-mono font-semibold">${cost.toFixed(2)}</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-[#858687] mb-1">Total cost</p>
+              <p className="text-2xl font-mono font-semibold text-white">${cost.toFixed(2)}</p>
+              <p className="text-xs text-[#858687]">
                 {hedgeCostPercent.toFixed(2)}% of portfolio
               </p>
             </div>
@@ -235,41 +236,41 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
 
       {/* Risk vs Reward - The Key Insight */}
       <div className="grid md:grid-cols-2 gap-4">
-        <Card className="bg-card border-border border-l-4 border-l-green-500">
+        <Card className="bg-[#1c2026] border-[#2d3139] border-l-4 border-l-[#3fb950]">
           <CardContent className="p-5">
-            <h3 className="font-medium mb-3 text-green-400">If Your Prediction is Right</h3>
+            <h3 className="font-medium mb-3 text-[#3fb950]">If Your Prediction is Right</h3>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">You win:</span>
-                <span className="font-mono font-semibold text-green-400">+${maxProfit.toFixed(2)}</span>
+                <span className="text-[#858687]">You win:</span>
+                <span className="font-mono font-semibold text-[#3fb950]">+${maxProfit.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Return:</span>
-                <span className="font-mono">{returnOnWin.toFixed(0)}%</span>
+                <span className="text-[#858687]">Return:</span>
+                <span className="font-mono text-white">{returnOnWin.toFixed(0)}%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Could offset:</span>
-                <span className="font-mono">{potentialOffset.toFixed(1)}% portfolio loss</span>
+                <span className="text-[#858687]">Could offset:</span>
+                <span className="font-mono text-white">{potentialOffset.toFixed(1)}% portfolio loss</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-border border-l-4 border-l-red-500">
+        <Card className="bg-[#1c2026] border-[#2d3139] border-l-4 border-l-[#f85149]">
           <CardContent className="p-5">
-            <h3 className="font-medium mb-3 text-red-400">If Your Prediction is Wrong</h3>
+            <h3 className="font-medium mb-3 text-[#f85149]">If Your Prediction is Wrong</h3>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">You lose:</span>
-                <span className="font-mono font-semibold text-red-400">-${maxLoss.toFixed(2)}</span>
+                <span className="text-[#858687]">You lose:</span>
+                <span className="font-mono font-semibold text-[#f85149]">-${maxLoss.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Of your bet:</span>
-                <span className="font-mono">100%</span>
+                <span className="text-[#858687]">Of your bet:</span>
+                <span className="font-mono text-white">100%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Of portfolio:</span>
-                <span className="font-mono">{hedgeCostPercent.toFixed(2)}%</span>
+                <span className="text-[#858687]">Of portfolio:</span>
+                <span className="font-mono text-white">{hedgeCostPercent.toFixed(2)}%</span>
               </div>
             </div>
           </CardContent>
@@ -277,21 +278,21 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
       </div>
 
       {/* Breakeven Explanation */}
-      <Card className="bg-card border-border">
+      <Card className="bg-[#1c2026] border-[#2d3139]">
         <CardContent className="p-5">
-          <h3 className="font-medium mb-2">Breakeven Point</h3>
-          <p className="text-muted-foreground text-sm mb-3">
+          <h3 className="font-medium mb-2 text-white">Breakeven Point</h3>
+          <p className="text-[#858687] text-sm mb-3">
             You paid {Math.round(entryPrice * 100)}¢ per share. For you to profit if you sell before resolution, 
-            the market price needs to be <span className="text-foreground font-medium">above {breakeven.toFixed(0)}%</span>.
+            the market price needs to be <span className="text-white font-medium">above {breakeven.toFixed(0)}%</span>.
           </p>
           
-          <div className="h-4 bg-secondary rounded-full relative overflow-hidden">
+          <div className="h-4 bg-[#252932] rounded-full relative overflow-hidden">
             <div 
-              className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-red-500 to-yellow-500"
+              className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-[#f85149] to-[#f0883e]"
               style={{ width: `${breakeven}%` }}
             />
             <div 
-              className="absolute top-0 bottom-0 bg-gradient-to-r from-yellow-500 to-green-500"
+              className="absolute top-0 bottom-0 bg-gradient-to-r from-[#f0883e] to-[#3fb950]"
               style={{ left: `${breakeven}%`, right: 0 }}
             />
             <div 
@@ -299,20 +300,82 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
               style={{ left: `${breakeven}%` }}
             />
           </div>
-          <div className="flex justify-between text-xs text-muted-foreground mt-1">
+          <div className="flex justify-between text-xs text-[#858687] mt-1">
             <span>0% (lose all)</span>
-            <span className="font-medium text-foreground">{breakeven.toFixed(0)}% breakeven</span>
+            <span className="font-medium text-white">{breakeven.toFixed(0)}% breakeven</span>
             <span>100% (max win)</span>
           </div>
         </CardContent>
       </Card>
 
-      {/* Scenario Chart */}
-      <Card className="bg-card border-border">
+      {/* Payoff Curve Chart */}
+      <Card className="bg-[#1c2026] border-[#2d3139]">
         <CardContent className="p-5">
-          <h3 className="font-medium mb-2">What if the probability changes?</h3>
-          <p className="text-sm text-muted-foreground mb-4">
-            If you sell before resolution, here&apos;s your P&L at different market prices:
+          <h3 className="font-medium mb-2 text-white">Payoff Curve</h3>
+          <p className="text-sm text-[#858687] mb-4">
+            Your profit/loss as market probability changes (if you sell before resolution):
+          </p>
+          
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={pnlScenarios} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <XAxis 
+                  dataKey="label" 
+                  tick={{ fill: '#858687', fontSize: 12 }}
+                  axisLine={{ stroke: '#2d3139' }}
+                  tickLine={{ stroke: '#2d3139' }}
+                />
+                <YAxis 
+                  tick={{ fill: '#858687', fontSize: 12 }}
+                  axisLine={{ stroke: '#2d3139' }}
+                  tickLine={{ stroke: '#2d3139' }}
+                  tickFormatter={(value) => `$${value}`}
+                />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      const data = payload[0].payload;
+                      return (
+                        <div className="bg-[#1c2026] border border-[#2d3139] rounded-lg px-3 py-2 text-sm shadow-lg">
+                          <p className="text-white font-medium">At {data.label} probability</p>
+                          <p className={data.pnl >= 0 ? "text-[#3fb950]" : "text-[#f85149]"}>
+                            P&L: {data.pnl >= 0 ? "+" : ""}${data.pnl.toFixed(2)}
+                          </p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <ReferenceLine y={0} stroke="#2d3139" strokeDasharray="3 3" />
+                <Line 
+                  type="monotone" 
+                  dataKey="pnl" 
+                  stroke="#3fb950"
+                  strokeWidth={2}
+                  dot={{ fill: '#3fb950', strokeWidth: 0, r: 4 }}
+                  activeDot={{ fill: '#3fb950', strokeWidth: 0, r: 6 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Current position marker */}
+          <div className="flex items-center justify-center gap-2 mt-4 text-sm">
+            <div className="w-3 h-3 rounded-full bg-[#3fb950]" />
+            <span className="text-[#858687]">
+              Current: <span className="text-white font-medium">{Math.round(selected.probability * 100)}%</span>
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Scenario Table */}
+      <Card className="bg-[#1c2026] border-[#2d3139]">
+        <CardContent className="p-5">
+          <h3 className="font-medium mb-2 text-white">Scenario Analysis</h3>
+          <p className="text-sm text-[#858687] mb-4">
+            P&L at different market probabilities:
           </p>
           
           <div className="space-y-2">
@@ -323,31 +386,31 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
               
               return (
                 <div key={scenario.label} className="flex items-center gap-3">
-                  <span className={`w-12 text-sm font-mono ${isCurrentPrice ? "text-accent font-bold" : "text-muted-foreground"}`}>
+                  <span className={`w-12 text-sm font-mono ${isCurrentPrice ? "text-[#3fb950] font-bold" : "text-[#858687]"}`}>
                     {scenario.label}
                   </span>
-                  <div className="flex-1 h-7 bg-secondary/30 rounded relative overflow-hidden">
+                  <div className="flex-1 h-7 bg-[#252932] rounded relative overflow-hidden">
                     {scenario.pnl >= 0 ? (
                       <div 
-                        className="absolute left-1/2 top-0 bottom-0 bg-green-500/50 rounded-r"
+                        className="absolute left-1/2 top-0 bottom-0 bg-[rgba(63,185,80,0.3)] rounded-r"
                         style={{ width: `${barWidth / 2}%` }}
                       />
                     ) : (
                       <div 
-                        className="absolute right-1/2 top-0 bottom-0 bg-red-500/50 rounded-l"
+                        className="absolute right-1/2 top-0 bottom-0 bg-[rgba(248,81,73,0.3)] rounded-l"
                         style={{ width: `${barWidth / 2}%` }}
                       />
                     )}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span className={`text-sm font-mono font-medium ${
-                        scenario.pnl >= 0 ? "text-green-400" : "text-red-400"
+                        scenario.pnl >= 0 ? "text-[#3fb950]" : "text-[#f85149]"
                       }`}>
                         {scenario.pnl >= 0 ? "+" : ""}${scenario.pnl.toFixed(0)}
                       </span>
                     </div>
                   </div>
                   {isCurrentPrice && (
-                    <span className="text-xs text-accent w-12">← now</span>
+                    <span className="text-xs text-[#3fb950] w-16">← current</span>
                   )}
                 </div>
               );
@@ -357,14 +420,14 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
       </Card>
 
       {/* The Hedge Insight */}
-      <Card className="bg-gradient-to-br from-accent/5 to-transparent border-accent/20">
+      <Card className="bg-gradient-to-br from-[rgba(63,185,80,0.1)] to-transparent border-[rgba(63,185,80,0.3)]">
         <CardContent className="p-5">
-          <h3 className="font-medium mb-2">💡 Why This is a Hedge</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="font-medium mb-2 text-white">💡 Why This is a Hedge</h3>
+          <p className="text-sm text-[#858687]">
             {selected.reasoning}
           </p>
-          <p className="text-sm text-muted-foreground mt-2">
-            <strong className="text-foreground">The idea:</strong> If the event happens and hurts your stocks, 
+          <p className="text-sm text-[#858687] mt-2">
+            <strong className="text-white">The idea:</strong> If the event happens and hurts your stocks, 
             your Polymarket bet pays out, offsetting some of the loss.
           </p>
         </CardContent>
@@ -373,7 +436,7 @@ export function GreeksView({ recommendations, stockInfo = {}, portfolioValue = 5
       {!showEducation && (
         <button 
           onClick={() => setShowEducation(true)}
-          className="text-sm text-muted-foreground hover:text-foreground"
+          className="text-sm text-[#858687] hover:text-white transition-colors"
         >
           Show prediction market basics
         </button>

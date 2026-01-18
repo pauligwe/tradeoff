@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { HedgeRecommendations } from "@/components/HedgeRecommendations";
-import { CompressionMetrics } from "@/components/CompressionMetrics";
 import type { PortfolioItem, StockInfo, AnalysisResult, HedgeRecommendation } from "@/app/page";
 
 interface HedgeViewProps {
@@ -191,7 +190,6 @@ export function HedgeView({
             }}
           />
 
-          <CompressionMetrics compression={analysisResult.compression} />
         </>
       )}
     </div>

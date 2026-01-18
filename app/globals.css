@@ -46,50 +46,64 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
-/* Dark-first minimalist theme inspired by tomalmog.com */
+/* ============================================
+   POLYMARKET EXACT COLOR SCHEME
+   Extracted from polymarket.com
+   ============================================ */
 :root {
   --radius: 0.5rem;
-  /* Near-black background */
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  /* Cards slightly lighter */
-  --card: #111111;
-  --card-foreground: #fafafa;
-  --popover: #111111;
-  --popover-foreground: #fafafa;
-  /* Primary - subtle white */
-  --primary: #fafafa;
-  --primary-foreground: #0a0a0a;
-  /* Secondary */
-  --secondary: #1a1a1a;
-  --secondary-foreground: #fafafa;
-  /* Muted */
-  --muted: #1a1a1a;
-  --muted-foreground: #a1a1a1;
-  /* Accent - subtle teal/cyan */
-  --accent: #0d9488;
-  --accent-foreground: #fafafa;
-  /* Destructive */
-  --destructive: #ef4444;
+  
+  /* Main backgrounds */
+  --background: #12161c;
+  --foreground: #ffffff;
+  
+  /* Card backgrounds */
+  --card: #1c2026;
+  --card-foreground: #ffffff;
+  --popover: #1c2026;
+  --popover-foreground: #ffffff;
+  
+  /* Primary (white buttons) */
+  --primary: #ffffff;
+  --primary-foreground: #12161c;
+  
+  /* Secondary surfaces */
+  --secondary: #252932;
+  --secondary-foreground: #ffffff;
+  
+  /* Muted/subdued */
+  --muted: #2d3139;
+  --muted-foreground: #858687;
+  
+  /* Polymarket Green (YES) */
+  --accent: #3fb950;
+  --accent-foreground: #ffffff;
+  
+  /* Polymarket Red (NO) */
+  --destructive: #f85149;
+  --destructive-foreground: #ffffff;
+  
   /* Borders */
-  --border: #262626;
-  --input: #262626;
-  --ring: #525252;
+  --border: #2d3139;
+  --input: #2d3139;
+  --ring: #3fb950;
+  
   /* Chart colors */
-  --chart-1: #0d9488;
-  --chart-2: #06b6d4;
-  --chart-3: #3b82f6;
-  --chart-4: #8b5cf6;
-  --chart-5: #ec4899;
+  --chart-1: #3fb950;
+  --chart-2: #58a6ff;
+  --chart-3: #a371f7;
+  --chart-4: #f0883e;
+  --chart-5: #f778ba;
+  
   /* Sidebar */
-  --sidebar: #0a0a0a;
-  --sidebar-foreground: #fafafa;
-  --sidebar-primary: #0d9488;
-  --sidebar-primary-foreground: #fafafa;
-  --sidebar-accent: #1a1a1a;
-  --sidebar-accent-foreground: #fafafa;
-  --sidebar-border: #262626;
-  --sidebar-ring: #525252;
+  --sidebar: #12161c;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #3fb950;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1c2026;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #2d3139;
+  --sidebar-ring: #3fb950;
 }
 
 @layer base {
@@ -98,24 +112,352 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 }
 
-/* Custom scrollbar for dark theme */
+/* ============================================
+   SCROLLBAR
+   ============================================ */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #262626;
+  background: #2d3139;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #404040;
+  background: #3d4149;
+}
+
+/* ============================================
+   POLYMARKET BUTTON STYLES
+   ============================================ */
+
+/* YES Button - Green outline style */
+.btn-yes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  background-color: rgba(63, 185, 80, 0.15);
+  color: #3fb950;
+  border: 1px solid rgba(63, 185, 80, 0.4);
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-yes:hover {
+  background-color: rgba(63, 185, 80, 0.25);
+  border-color: rgba(63, 185, 80, 0.6);
+}
+
+/* NO Button - Red outline style */
+.btn-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  background-color: rgba(248, 81, 73, 0.15);
+  color: #f85149;
+  border: 1px solid rgba(248, 81, 73, 0.4);
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-no:hover {
+  background-color: rgba(248, 81, 73, 0.25);
+  border-color: rgba(248, 81, 73, 0.6);
+}
+
+/* Solid green button (like Sign Up) */
+.btn-green {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  background-color: #3fb950;
+  color: #ffffff;
+  border: none;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-green:hover {
+  background-color: #2ea043;
+}
+
+/* Ghost button */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  color: #858687;
+  border: none;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  color: #ffffff;
+  background-color: #252932;
+}
+
+/* ============================================
+   POLYMARKET CARD STYLES
+   ============================================ */
+.poly-card {
+  background-color: #1c2026;
+  border: 1px solid #2d3139;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: all 0.15s ease;
+}
+
+.poly-card:hover {
+  border-color: #3d4149;
+  background-color: #222730;
+}
+
+/* ============================================
+   POLYMARKET PILL/TAG STYLES
+   ============================================ */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background-color: #252932;
+  color: #858687;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pill:hover {
+  background-color: #2d3139;
+  color: #ffffff;
+}
+
+.pill-active {
+  background-color: #3fb950;
+  color: #ffffff;
+}
+
+.pill-active:hover {
+  background-color: #2ea043;
+}
+
+/* ============================================
+   POLYMARKET INPUT STYLES
+   ============================================ */
+.poly-input {
+  width: 100%;
+  background-color: #1c2026;
+  border: 1px solid #2d3139;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+}
+
+.poly-input:focus {
+  border-color: #3fb950;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(63, 185, 80, 0.2);
+}
+
+.poly-input::placeholder {
+  color: #858687;
+}
+
+/* Search input like Polymarket header */
+.search-input {
+  background-color: #252932;
+  border: 1px solid #2d3139;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  padding-left: 2.5rem;
+  font-size: 0.875rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-input:focus {
+  border-color: #3d4149;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #858687;
+}
+
+/* ============================================
+   PERCENTAGE DISPLAYS
+   ============================================ */
+.percentage-large {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.percentage-label {
+  font-size: 0.75rem;
+  color: #858687;
+  margin-top: 0.125rem;
+}
+
+/* ============================================
+   VOLUME BADGE
+   ============================================ */
+.volume-badge {
+  font-size: 0.75rem;
+  color: #858687;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ============================================
+   NAVIGATION TAB STYLES
+   ============================================ */
+.nav-tab {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #858687;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+
+.nav-tab:hover {
+  color: #ffffff;
+}
+
+.nav-tab-active {
+  color: #ffffff;
+}
+
+.nav-tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #3fb950;
+  border-radius: 1px;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.text-poly-green {
+  color: #3fb950;
+}
+
+.text-poly-red {
+  color: #f85149;
+}
+
+.text-poly-blue {
+  color: #58a6ff;
+}
+
+.text-poly-muted {
+  color: #858687;
+}
+
+.bg-poly-green {
+  background-color: rgba(63, 185, 80, 0.15);
+}
+
+.bg-poly-red {
+  background-color: rgba(248, 81, 73, 0.15);
+}
+
+.border-poly {
+  border-color: #2d3139;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background-color: #2d3139;
+  width: 100%;
+}
+
+/* ============================================
+   HEADER STYLES
+   ============================================ */
+.poly-header {
+  background-color: #12161c;
+  border-bottom: 1px solid #2d3139;
+}
+
+.poly-nav {
+  background-color: #12161c;
+  border-bottom: 1px solid #2d3139;
+}
+
+/* ============================================
+   LIVE INDICATOR
+   ============================================ */
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #f85149;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ============================================
+   TRANSITIONS
+   ============================================ */
+button, a, input, select, .transition-all {
+  transition: all 0.15s ease;
+}
+
+/* Focus states */
+*:focus-visible {
+  outline: 2px solid #3fb950;
+  outline-offset: 2px;
 }

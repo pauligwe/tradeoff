@@ -256,26 +256,36 @@ export default function Home() {
   }, [portfolio, analysisResult, preloadAllTabs]);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Hero Header */}
-      <header className="pt-12 pb-4 px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight mb-2">
-            Polymarket Terminal
-          </h1>
-          <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed mb-6">
-            Advanced prediction market analytics & trading tools
-          </p>
-
-          {/* Tabs */}
-          <div className="flex justify-center">
-            <TabNav activeTab={activeTab} onTabChange={setActiveTab} />
+    <div className="min-h-screen bg-[#12161c] flex flex-col">
+      {/* Header */}
+      <header className="bg-[#12161c] border-b border-[#2d3139]">
+        <div className="max-w-[1400px] mx-auto px-6 py-4">
+          <div className="flex items-center justify-center gap-6">
+            {/* Logo */}
+            <div className="flex items-center gap-2">
+              <svg className="w-6 h-6 text-[#3fb950]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+              <h1 className="text-xl font-bold">
+                <span className="text-white">Trade</span>
+                <span className="text-[#3fb950]">Off</span>
+              </h1>
+            </div>
           </div>
         </div>
       </header>
 
+      {/* Tab Navigation */}
+      <div className="bg-[#12161c] border-b border-[#2d3139] sticky top-0 z-50">
+        <div className="max-w-[1400px] mx-auto px-6 py-3 flex justify-center">
+          <TabNav activeTab={activeTab} onTabChange={setActiveTab} />
+        </div>
+      </div>
+
       {/* Main Content */}
-      <main className="flex-1 max-w-5xl w-full mx-auto px-6 pb-16">
+      <main className="flex-1 max-w-[1400px] w-full mx-auto px-4 py-6">
         {activeTab === "portfolio" && (
           <PortfolioView
             portfolio={portfolio}
@@ -331,9 +341,14 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border py-6 px-6">
-        <div className="max-w-5xl mx-auto text-center text-sm text-muted-foreground">
-          Built for NexHacks 2026 &middot; Powered by Polymarket & Groq
+      <footer className="border-t border-[#2d3139] py-4 px-4 mt-auto">
+        <div className="max-w-[1400px] mx-auto flex items-center justify-between text-xs text-[#858687]">
+          <span>TradeOff © 2026</span>
+          <div className="flex items-center gap-4">
+            <a href="#" className="hover:text-white">Privacy</a>
+            <a href="#" className="hover:text-white">Terms</a>
+            <a href="#" className="hover:text-white">Docs</a>
+          </div>
         </div>
       </footer>
     </div>

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Polymarket Hedge",
-  description: "AI-powered portfolio hedging with Polymarket prediction markets",
+  title: "TradeOff",
+  description: "AI-powered portfolio hedging with prediction markets",
 };
 
 export default function RootLayout({
