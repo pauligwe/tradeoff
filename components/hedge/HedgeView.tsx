@@ -3,7 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { HedgeRecommendations } from "@/components/HedgeRecommendations";
+import { WoodWideAttribution } from "@/components/WoodWideAttribution";
 import type { PortfolioItem, StockInfo, AnalysisResult, HedgeRecommendation } from "@/app/page";
+import type { CorrelationInsight } from "@/components/HedgeCard";
 
 interface HedgeViewProps {
   portfolio: PortfolioItem[];
@@ -28,6 +30,8 @@ export function HedgeView({
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const hasAutoAnalyzed = useRef(false);
+  const [correlationData, setCorrelationData] = useState<Record<string, CorrelationInsight>>({});
+  const [isLoadingCorrelations, setIsLoadingCorrelations] = useState(false);
 
   const handleAnalyze = async () => {
     if (portfolio.length === 0) return;
@@ -86,6 +90,44 @@ export function HedgeView({
       }
     }
   }, [portfolio, analysisResult]);
+
+  // Fetch correlation data when analysis results are available
+  useEffect(() => {
+    const fetchCorrelations = async () => {
+      if (!analysisResult || analysisResult.recommendations.length === 0) return;
+      
+      setIsLoadingCorrelations(true);
+      const newCorrelationData: Record<string, CorrelationInsight> = {};
+      
+      // Fetch correlations for each recommendation in parallel
+      const promises = analysisResult.recommendations.map(async (rec) => {
+        try {
+          const response = await fetch("/api/correlation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              betTitle: rec.market,
+              betDescription: rec.reasoning,
+              affectedTickers: rec.affectedStocks,
+            }),
+          });
+          
+          if (response.ok) {
+            const insight = await response.json();
+            newCorrelationData[rec.market] = insight;
+          }
+        } catch (err) {
+          console.error(`Failed to fetch correlation for ${rec.market}:`, err);
+        }
+      });
+      
+      await Promise.all(promises);
+      setCorrelationData(newCorrelationData);
+      setIsLoadingCorrelations(false);
+    };
+    
+    fetchCorrelations();
+  }, [analysisResult]);
 
   // No portfolio - prompt to add one
   if (portfolio.length === 0) {
@@ -169,6 +211,14 @@ export function HedgeView({
       {/* Results */}
       {analysisResult && !isAnalyzing && (
         <>
+          {/* Correlation loading indicator */}
+          {isLoadingCorrelations && Object.keys(correlationData).length === 0 && (
+            <div className="flex items-center gap-2 text-xs text-[#858687] bg-[#1c2026] border border-[#2d3139] rounded-lg px-3 py-2">
+              <div className="w-3 h-3 border border-[#3fb950] border-t-transparent rounded-full animate-spin" />
+              <span>Loading historical correlation data...</span>
+            </div>
+          )}
+          
           <HedgeRecommendations
             summary={analysisResult.summary}
             recommendations={analysisResult.recommendations}
@@ -178,8 +228,15 @@ export function HedgeView({
               if (onBetSelect) onBetSelect(bet);
               if (onGoToNews) onGoToNews();
             }}
+            correlationData={correlationData}
           />
 
+          {/* Wood Wide Attribution */}
+          {Object.values(correlationData).some(c => c.hasHistoricalData) && (
+            <div className="flex justify-center pt-4">
+              <WoodWideAttribution variant="inline" />
+            </div>
+          )}
         </>
       )}
     </div>

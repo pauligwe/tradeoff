@@ -1,0 +1,839 @@
+{
+  "generatedAt": "2026-01-18T06:18:27.790Z",
+  "totalEvents": 556,
+  "totalMatches": 39,
+  "dateRange": {
+    "from": "2023-01-18",
+    "to": "2026-01-18"
+  },
+  "pairs": [
+    {
+      "event": {
+        "eventId": "10025",
+        "title": "Boeing emergency landing by next Friday?",
+        "slug": "boeing-emergency-landing-by-next-friday",
+        "description": "On March 13 there was yet another emergency landing in a Boeing plane due to a possible mechanical issue (see https://www.foxbusiness.com/lifestyle/boeing-plane-forced-emergency-landing-lax-possible-mechanical-issue).\n\nThis market will resolve to \"Yes\" if another Boeing plane is forced to make an emergency landing due to a technical or mechanical issue between March 14, 12:00 PM ET and March 22, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nNote - emergency landings due to passenger issues (such as a passenger opening the door mid flight) will not suffice to resolve this market to \"Yes.\" If the plane makes an emergency landing due to a possible technical/mechanical issue it will suffice to resolve this market to \"Yes.\"\n\nThe resolution source for this market will be a consensus of credible reporting.",
+        "resolutionDate": "2024-03-21T23:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "BA",
+          "companyName": "Boeing",
+          "priceOnResolution": 187.7,
+          "resolutionDate": "2024-03-21T23:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Boeing\""
+    },
+    {
+      "event": {
+        "eventId": "10027",
+        "title": "Retardio major exchange listing in March?",
+        "slug": "will-retardio-be-listed-on-a-major-cex-by-march-31",
+        "description": "This market will resolve to \"Yes\" if the crypto token RETARDIO (RETARDIO) is listed for spot purchase on one of the listed exchanges by March 31, 2024, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nExchanges: Coinbase, Binance, Kraken, Gemini, OKX, Upbit, Gate.io, KuCoin, HTX, Bitfinex, MEXC, Bitget, Crypto.com, BingX, Bybit, XT.COM, Binance.US, Tokocrypto, Binance TR, Bitstamp, Deepcoin\n\nThe primary resolution source for this market will be information from one of the listed exchanges. However, a consensus of credible reporting will also be used.\n",
+        "resolutionDate": "2024-03-31T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "COIN",
+          "companyName": "Coinbase",
+          "priceOnResolution": 265.12,
+          "resolutionDate": "2024-03-31T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Coinbase\""
+    },
+    {
+      "event": {
+        "eventId": "10041",
+        "title": "Pornhub restores access in Texas by March 31?",
+        "slug": "pornhub-restores-access-in-texas-by-march-31",
+        "description": "On March 14, Pornhub announced that it had blocked access to its content in Texas after a federal appeals court upheld a Texas law requiring pornography sites to institute age-verification measures (see https://www.nbcnews.com/tech/pornhub-disables-website-texas-rcna143502).\n\nThis market will resolve to \"Yes\" if Pornhub announces that it has restored access for users in Texas by March 31, 2024, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nThe primary resolution source will be official information from Pornhub. However, a consensus of credible reporting may also be used to determine whether Pornhub restored access in Texas.\n",
+        "resolutionDate": "2024-03-31T04:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "SQ",
+          "companyName": "Block",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-03-31T04:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Block\""
+    },
+    {
+      "event": {
+        "eventId": "10047",
+        "title": "How many SpaceX Starship launches reach space in 2024?",
+        "slug": "how-many-spacex-starship-launches-reach-space-in-2024",
+        "description": "This is a market on predicting the number of SpaceX Starship launches that successfully reach space in the year 2024.",
+        "resolutionDate": "2024-12-31T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TSLA",
+          "companyName": "SpaceX",
+          "priceOnResolution": 403.84,
+          "resolutionDate": "2024-12-31T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"SpaceX\""
+    },
+    {
+      "event": {
+        "eventId": "10067",
+        "title": "Another Boeing emergency landing by Friday?",
+        "slug": "another-boeing-emergency-landing-by-friday",
+        "description": "On March 15 there was yet another emergency landing in a Boeing plane due to a possible technical issue (see https://airlive.net/emergency/2024/03/16/klm-boeing-737-kl1074-declares-mayday-due-to-flaps-stuck-and-low-fuel-on-approach-to-amsterdam/).\n\nThis market will resolve to \"Yes\" if another Boeing plane is forced to make an emergency landing due to a possible technical or mechanical issue between March 18, 12:00 PM ET and March 22, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nNote - emergency landings due to passenger issues (such as a passenger opening the door mid flight) will not suffice to resolve this market to \"Yes.\" If the plane makes an emergency landing due to a possible technical/mechanical issue it will suffice to resolve this market to \"Yes.\"\n\nThe resolution source for this market will be a consensus of credible reporting.",
+        "resolutionDate": "2024-03-22T07:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "BA",
+          "companyName": "Boeing",
+          "priceOnResolution": 188.85,
+          "resolutionDate": "2024-03-22T07:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Boeing\""
+    },
+    {
+      "event": {
+        "eventId": "10099",
+        "title": "Haiti intervention by April 30?",
+        "slug": "haiti-intervention-by-april-30",
+        "description": "This market will resolve to \"Yes\" if police officers, security forces, or military personnel from countries other than Haiti conduct officially acknowledged police, military, peacekeeping, and/or security operations on the ground within the sovereign territory of Haiti intended to establish increased national security or stability between March 19, 2024 and April 30, 2024 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nFor the intervention to count toward a \"Yes\" resolution, the officially acknowledged police, military, peacekeeping and/or security operations must involve that country's physical police or military presence within the sovereign territory of Haiti. For the purposes of this market, \"police, military, peacekeeping, and/or security operations\" resulting in a \"Yes\" resolution specifically do not include actions exclusively related to surveillance or intelligence performed by aircraft, drones, satellites, etc.\n\nSecurity actions undertaken by a country exclusively to protect, evacuate, or maintain the safety of its embassy and personnel within Haiti will not qualify to resolve this market to \"Yes\".\n\nOfficial acknowledgement must include statements indicating foreign police, military, peacekeeping, or security intervention from the foreign government making the intervention.\n\nA consensus of credible reporting may be used to ascertain the validity of an official acknowledgement.",
+        "resolutionDate": "2024-04-30T04:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "INTC",
+          "companyName": "Intel",
+          "priceOnResolution": 30.47,
+          "resolutionDate": "2024-04-30T04:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Intel\""
+    },
+    {
+      "event": {
+        "eventId": "10100",
+        "title": "Boeing emergency landing in US by Mar 31?",
+        "slug": "boeing-emergency-landing-in-us-by-mar-31",
+        "description": "This market will resolve to \"Yes\" if a Boeing plane is forced to make an emergency landing in the United States due to a possible technical or mechanical issue between March 20, 4:00 PM ET and March 31, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nFor an emergency landing to qualify for a \"Yes\" resolution, the Boeing aircraft must make an emergency landing within one of the 50 US states or Washington D.C.\n\nNote - emergency landings due to passenger issues (such as a passenger opening the door mid flight) will not suffice to resolve this market to \"Yes.\" If the plane makes an emergency landing due to a possible technical/mechanical issue it will suffice to resolve this market to \"Yes.\"\n\nThe resolution source for this market will be a consensus of credible reporting.",
+        "resolutionDate": "2024-03-31T07:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "BA",
+          "companyName": "Boeing",
+          "priceOnResolution": 192.99,
+          "resolutionDate": "2024-03-31T07:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Boeing\""
+    },
+    {
+      "event": {
+        "eventId": "10167",
+        "title": "Will Trump tweet again by June 1?",
+        "slug": "will-trump-tweet-again-by-june-1",
+        "description": "This market will resolve to \"Yes\" if @realDonaldTrump posts/tweets again, between March 27, 12 PM ET and June 1, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nFor the purposes of this market, all quote and reply posts/tweets count toward a \"Yes\" resolution, but reposts/retweets will not count.\n\nThe resolution source for this market will be Donald J. Trump's verified X/Twitter account: https://twitter.com/realdonaldtrump.\n\nPlease note, only the @realDonaldTrump verified X/Twitter account counts for this market, regardless of the URL for this profile. If Donald J. Trump posts/tweets from another account, it has no bearing on the resolution of this market.\n",
+        "resolutionDate": "2024-06-01T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TWTR",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-06-01T12:00:00Z"
+        },
+        {
+          "ticker": "X",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-06-01T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Twitter\"; Description contains \"Twitter\""
+    },
+    {
+      "event": {
+        "eventId": "10278",
+        "title": "Tesla Robotaxi unveiling delayed?",
+        "slug": "robotaxi-launch-delayed",
+        "description": "This market will resolve to \"Yes\" if Tesla's unveiling of Robotaxi is delayed until after August 8, 2024, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nThis market may resolve immediately upon the announcement of a delay.\n\nThe primary resolution source for this market will be official information from Tesla and/or Elon Musk and their official representatives, however a consensus of credible reporting may also be used.\n\n",
+        "resolutionDate": "2024-08-08T12:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TSLA",
+          "companyName": "Tesla",
+          "priceOnResolution": 198.84,
+          "resolutionDate": "2024-08-08T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Tesla\""
+    },
+    {
+      "event": {
+        "eventId": "10287",
+        "title": "X banned in Brazil before May?",
+        "slug": "xtwitter-illegal-in-brazil-before-may",
+        "description": "This market will resolve to \"Yes\" if the X/Twitter app is banned for download and/or use by the majority of Brazilians in Brazil by April 30, 2024, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nThe primary resolution source for this market will be information from the government of Brazil, however a consensus of credible reporting will also be used.",
+        "resolutionDate": "2024-04-30T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TWTR",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-30T12:00:00Z"
+        },
+        {
+          "ticker": "X",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-30T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Twitter\"; Description contains \"Twitter\""
+    },
+    {
+      "event": {
+        "eventId": "10314",
+        "title": "VanEck tweet \"retardio\" in April?",
+        "slug": "vaneck-tweet-retardio-in-april",
+        "description": "This market will resolve to \"Yes\" if @vaneck_us posts/tweets the word \"retardio\", between April 10, 2024, 10 AM ET and April 30, 2024, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nFor the purposes of this market, all quote and reply posts/tweets count toward a \"Yes\" resolution, but reposts/retweets will not count.\n\nPluralization/possessive of the word, as well as variance in capitalizations will count toward the resolution of this market, however variant spellings of the word \"retardio\" will not.\n\nThe resolution source for this market will be VanEck's verified X/Twitter account: https://twitter.com/vaneck_us.\n\nPlease note, only the @vaneck_us verified X/Twitter account counts for this market, regardless of the URL for this profile. If VanEck posts/tweets from another account, it has no bearing on the resolution of this market.",
+        "resolutionDate": "2024-04-30T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TWTR",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-30T12:00:00Z"
+        },
+        {
+          "ticker": "X",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-30T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Twitter\"; Description contains \"Twitter\""
+    },
+    {
+      "event": {
+        "eventId": "10324",
+        "title": "KO in the Ansem/Barney fight?",
+        "slug": "ko-in-the-ansembarney-fight",
+        "description": "Ansem (@blknoiz06) is scheduled to fight Barney (@barneytheboi) on April 19, 2024 in Dubai. You can view this post to learn more: https://twitter.com/RookieXBT/status/1765082785126219980\n\nIf this fight ends in a knockout (KO) or technical knockout (TKO), this market will resolve to \"Yes\". Otherwise, this market will resolve to \"No\".\n\nIf this fight is declared a draw, postponed after April 26, 2024, 11:59 PM ET, or cancelled, this market will resolve to \"No\".",
+        "resolutionDate": "2024-04-19T12:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TWTR",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-19T12:00:00Z"
+        },
+        {
+          "ticker": "X",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-19T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Twitter\"; Description contains \"Twitter\""
+    },
+    {
+      "event": {
+        "eventId": "10326",
+        "title": "$PEPE spot listed on Coinbase in April?",
+        "slug": "pepe-spot-listed-on-coinbase-in-april",
+        "description": "This market will resolve to \"Yes\" if the crypto token Pepe Coin (PEPE) is listed for spot purchase on Coinbase by April 30, 2024, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nThe primary resolution source for this market will be Coinbase, however a consensus of credible reporting will also be used.",
+        "resolutionDate": "2024-04-30T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "COIN",
+          "companyName": "Coinbase",
+          "priceOnResolution": 203.93,
+          "resolutionDate": "2024-04-30T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Coinbase\""
+    },
+    {
+      "event": {
+        "eventId": "10327",
+        "title": "$MOG spot listed on Coinbase in April?",
+        "slug": "mog-spot-listed-on-coinbase-in-april",
+        "description": "This market will resolve to \"Yes\" if the crypto token Mog Coin ($MOG) is listed for spot purchase on Coinbase by April 30, 2024, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nThe primary resolution source for this market will be Coinbase, however a consensus of credible reporting will also be used.",
+        "resolutionDate": "2024-04-30T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "COIN",
+          "companyName": "Coinbase",
+          "priceOnResolution": 203.93,
+          "resolutionDate": "2024-04-30T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Coinbase\""
+    },
+    {
+      "event": {
+        "eventId": "10328",
+        "title": "$BITCOIN spot listed on Coinbase in April?",
+        "slug": "bitcoin-spot-listed-on-coinbase-in-april",
+        "description": "This market will resolve to \"Yes\" if the crypto token HarryPotterObamaSonic10Inu ($BITCOIN) is listed for spot purchase on Coinbase by April 30, 2024, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nThe primary resolution source for this market will be Coinbase, however a consensus of credible reporting will also be used.",
+        "resolutionDate": "2024-04-30T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "COIN",
+          "companyName": "Coinbase",
+          "priceOnResolution": 203.93,
+          "resolutionDate": "2024-04-30T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Coinbase\""
+    },
+    {
+      "event": {
+        "eventId": "10333",
+        "title": "Will Ansem KO Barney?",
+        "slug": "will-ansem-ko-barney",
+        "description": "Ansem (@blknoiz06) is scheduled to fight Barney (@barneytheboi) on April 19, 2024 in Dubai. You can view this post to learn more: https://twitter.com/RookieXBT/status/1765082785126219980\n\nIf Ansem knockouts Barney, this market will resolve to \"Yes\". Otherwise, this market will resolve to \"No\".\n\nTechnical knockouts will qualify towards a \"Yes\" resolution.\n\nIf this fight is postponed after April 26, 2024, 11:59 PM ET, or cancelled, this market will resolve to \"No\".",
+        "resolutionDate": "2024-04-19T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TWTR",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-19T12:00:00Z"
+        },
+        {
+          "ticker": "X",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-19T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Twitter\"; Description contains \"Twitter\""
+    },
+    {
+      "event": {
+        "eventId": "10334",
+        "title": "Will Barney KO Ansem?",
+        "slug": "will-barney-ko-ansem",
+        "description": "Ansem (@blknoiz06) is scheduled to fight Barney (@barneytheboi) on April 19, 2024 in Dubai. You can view this post to learn more: https://twitter.com/RookieXBT/status/1765082785126219980\n\nIf Barney knockouts Ansem, this market will resolve to \"Yes\". Otherwise, this market will resolve to \"No\".\n\nTechnical knockouts will qualify towards a \"Yes\" resolution.\n\nIf this fight is postponed after April 26, 2024, 11:59 PM ET, or cancelled, this market will resolve to \"No\".",
+        "resolutionDate": "2024-04-19T12:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TWTR",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-19T12:00:00Z"
+        },
+        {
+          "ticker": "X",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-19T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Twitter\"; Description contains \"Twitter\""
+    },
+    {
+      "event": {
+        "eventId": "10335",
+        "title": "Will Barney cry?",
+        "slug": "will-barney-cry",
+        "description": "Ansem (@blknoiz06) is scheduled to fight Barney (@barneytheboi) on April 19, 2024 in Dubai. You can view this post to learn more: https://twitter.com/RookieXBT/status/1765082785126219980\n\nThis market will resolve to \"Yes\" if Barney (@barneytheboi) cries at any point while on camera while at the venue of his fight with Ansem scheduled for April 19, 2024 in Dubai. Otherwise, this market will resolve to \"No\".\n\nFor the purpose of this market, 'crying' is defined as the visible shedding of tears that can be clearly observed on Barney's face. The 'crying' can take place at any time Barney is on camera and present at the fight venue even if the fight isn't ongoing.\n\nThis market will resolve to \"No\" if barney has left the venue after the fight and did not end up crying.\n\nThe primary resolution source for this market will be footage of the fight, however a consensus of credible reporting will also be used.\n\n",
+        "resolutionDate": "2024-04-19T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TWTR",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-19T12:00:00Z"
+        },
+        {
+          "ticker": "X",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-04-19T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Twitter\"; Description contains \"Twitter\""
+    },
+    {
+      "event": {
+        "eventId": "10450",
+        "title": "MrBeast biggest YouTube channel by June 30?",
+        "slug": "mrbeast-biggest-youtube-channel-by-june-30",
+        "description": "",
+        "resolutionDate": "2024-06-30T12:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "GOOGL",
+          "companyName": "YouTube",
+          "priceOnResolution": 182.15,
+          "resolutionDate": "2024-06-30T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"YouTube\""
+    },
+    {
+      "event": {
+        "eventId": "10469",
+        "title": "# of Elon Musk tweets between April 26 and May 3?",
+        "slug": "how-many-times-will-elon-musk-tweet-between-april-26-and-may-3",
+        "description": "asda",
+        "resolutionDate": "2024-05-03T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TSLA",
+          "companyName": "Elon Musk",
+          "priceOnResolution": 181.19,
+          "resolutionDate": "2024-05-03T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Elon Musk\""
+    },
+    {
+      "event": {
+        "eventId": "10483",
+        "title": "Fed rate hike in 2024?",
+        "slug": "fed-rate-hike-in-2024",
+        "description": "This market will resolve to “Yes” if the upper bound of the target federal funds rate is increased at any point between April 25 and December 18, 2024's Fed meeting. Otherwise, this market will resolve to “No.”\n\nThis market may not resolve to \"No\" until the Fed has released its rate changes information following its December 18 meeting.\n\nThe primary resolution source for this market will be the official website of the Federal Reserve (https://www.federalreserve.gov/monetarypolicy/openmarket.htm), however a consensus of credible reporting may also be used.",
+        "resolutionDate": "2024-12-18T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TGT",
+          "companyName": "Target",
+          "priceOnResolution": 130.7,
+          "resolutionDate": "2024-12-18T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Target\""
+    },
+    {
+      "event": {
+        "eventId": "10496",
+        "title": "Elon Musk post \"retardio\" in April?",
+        "slug": "elon-musk-post-retardio-in-april",
+        "description": "",
+        "resolutionDate": "2024-04-30T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TSLA",
+          "companyName": "Elon Musk",
+          "priceOnResolution": 183.28,
+          "resolutionDate": "2024-04-30T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Elon Musk\""
+    },
+    {
+      "event": {
+        "eventId": "10534",
+        "title": "$EIGEN transferable before CZ gets out of prison?",
+        "slug": "eigen-transferable-before-cz-gets-out-of-prison",
+        "description": "On April 30, Changpeng Zhao (CZ) was sentenced to 4 months of prison time.\n\nThis market will resolve to \"Yes\" if EigenLayer's token $EIGEN is transferable from airdrop recipients before Changpeng Zhao (CZ) is released from incarceration. Otherwise, this market will resolve to \"No\".\n\nIf neither event occurs by November 30, 2024, 11:59 PM ET, this market will resolve 50-50.\n\nThe primary resolution source for this market will be official information from the EigenLayer team (e.g. https://twitter.com/eigenlayer), and/or from the government of the United States, however a consensus of credible reporting will also be used.\n",
+        "resolutionDate": "2024-11-30T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TWTR",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-11-30T12:00:00Z"
+        },
+        {
+          "ticker": "X",
+          "companyName": "Twitter",
+          "priceOnResolution": null,
+          "resolutionDate": "2024-11-30T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Twitter\"; Description contains \"Twitter\""
+    },
+    {
+      "event": {
+        "eventId": "10559",
+        "title": "# of Elon Musk tweets between May 3 and May 10?",
+        "slug": "of-elon-musk-tweets-between-may-3-and-may-10",
+        "description": "qqqqqqq",
+        "resolutionDate": "2024-05-10T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TSLA",
+          "companyName": "Elon Musk",
+          "priceOnResolution": 168.47,
+          "resolutionDate": "2024-05-10T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Elon Musk\""
+    },
+    {
+      "event": {
+        "eventId": "10579",
+        "title": "Vultures 2 on Spotify by Friday?",
+        "slug": "kanye-vultures-2-on-spotify-by-friday",
+        "description": "",
+        "resolutionDate": "2024-05-10T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "SPOT",
+          "companyName": "Spotify",
+          "priceOnResolution": 294.6,
+          "resolutionDate": "2024-05-10T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Spotify\""
+    },
+    {
+      "event": {
+        "eventId": "10585",
+        "title": "Will Coinbase list $WIF in May?",
+        "slug": "will-coinbase-list-wif-in-may",
+        "description": "",
+        "resolutionDate": "2024-05-31T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "COIN",
+          "companyName": "Coinbase",
+          "priceOnResolution": 225.92,
+          "resolutionDate": "2024-05-31T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Coinbase\""
+    },
+    {
+      "event": {
+        "eventId": "10627",
+        "title": "Bieber Baby: Boy or Girl?",
+        "slug": "bieber-baby-boy-or-girl",
+        "description": "On May 9, 2024, Hailey Bieber shared photos on Instagram suggesting that she is pregnant (see https://www.instagram.com/p/C6wlW3WPoK2/?img_index=1).\n\nThis market will resolve to \"Boy\" if Hailey/Justin Bieber, or one of their official representatives announces they are having a boy.\nThis market will resolve to '\"Girl\" if Hailey/Justin Bieber, or one of their official representatives announces they are having a girl.\nIf the biological sex of Hailey Bieber's child remains undisclosed this market will resolve to '50-50'. \n\nIf Hailey Bieber gives birth to more than one child, this market will resolve based on the biological sex of the children. If all children are of the same biological sex, the market will resolve as '\"Boy\" if all are male, and \"Girl\" if all are female. If the children are of different sexes, the market will resolve to '50-50'.\n\nThis market refers only to the pregnancy announced on Instagram on May 9, 2024. Any future pregnancies will not be considered for this market.\n\nThe resolution source for this market will be official information Hailey and Justin Bieber, or one of their official representatives. ",
+        "resolutionDate": "2024-12-31T12:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "META",
+          "companyName": "Instagram",
+          "priceOnResolution": 585.51,
+          "resolutionDate": "2024-12-31T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Instagram\""
+    },
+    {
+      "event": {
+        "eventId": "10628",
+        "title": "# of Elon Musk tweets between May 10 and May 17?",
+        "slug": "of-elon-musk-tweets-between-may-10-and-may-17",
+        "description": "asd",
+        "resolutionDate": "2024-05-17T12:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TSLA",
+          "companyName": "Elon Musk",
+          "priceOnResolution": 177.46,
+          "resolutionDate": "2024-05-17T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Elon Musk\""
+    },
+    {
+      "event": {
+        "eventId": "10639",
+        "title": "$GME all time high by Friday?",
+        "slug": "gme-all-time-high-by-friday",
+        "description": "",
+        "resolutionDate": "2024-05-17T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "GM",
+          "companyName": "GM",
+          "priceOnResolution": 45.76,
+          "resolutionDate": "2024-05-17T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"GM\""
+    },
+    {
+      "event": {
+        "eventId": "10640",
+        "title": "# GME trading halts today?",
+        "slug": "number-gme-trading-halts-today",
+        "description": "qqqqqq",
+        "resolutionDate": "2024-05-13T12:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "GM",
+          "companyName": "GM",
+          "priceOnResolution": 45.17,
+          "resolutionDate": "2024-05-13T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"GM\""
+    },
+    {
+      "event": {
+        "eventId": "10641",
+        "title": "$GME halted on Tuesday?",
+        "slug": "gme-halted-on-tuesday",
+        "description": "",
+        "resolutionDate": "2024-05-14T12:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "GM",
+          "companyName": "GM",
+          "priceOnResolution": 45.03,
+          "resolutionDate": "2024-05-14T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"GM\""
+    },
+    {
+      "event": {
+        "eventId": "10647",
+        "title": "$GME market cap on May 17",
+        "slug": "gme-market-cap-on-may-17",
+        "description": "asd",
+        "resolutionDate": "2024-05-17T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "GM",
+          "companyName": "GM",
+          "priceOnResolution": 45.76,
+          "resolutionDate": "2024-05-17T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"GM\""
+    },
+    {
+      "event": {
+        "eventId": "10648",
+        "title": "Apple + OpenAI deal announced by Friday?",
+        "slug": "apple-openai-deal-announced-by-friday",
+        "description": "",
+        "resolutionDate": "2024-05-17T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "AAPL",
+          "companyName": "Apple",
+          "priceOnResolution": 189.87,
+          "resolutionDate": "2024-05-17T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Apple\""
+    },
+    {
+      "event": {
+        "eventId": "10660",
+        "title": "$GME halted on Wednesday?",
+        "slug": "gme-halted-on-wednesday",
+        "description": "",
+        "resolutionDate": "2024-05-15T12:00:00Z",
+        "outcome": "YES",
+        "finalProbability": "1"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "GM",
+          "companyName": "GM",
+          "priceOnResolution": 45.49,
+          "resolutionDate": "2024-05-15T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"GM\""
+    },
+    {
+      "event": {
+        "eventId": "10674",
+        "title": "$GME halted on Friday?",
+        "slug": "gme-halted-on-friday",
+        "description": "",
+        "resolutionDate": "2024-05-17T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "GM",
+          "companyName": "GM",
+          "priceOnResolution": 45.76,
+          "resolutionDate": "2024-05-17T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"GM\""
+    },
+    {
+      "event": {
+        "eventId": "10678",
+        "title": "# of Elon Musk tweets between May 17 and May 24?",
+        "slug": "of-elon-musk-tweets-between-may-17-and-may-24",
+        "description": "asd",
+        "resolutionDate": "2024-05-24T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "TSLA",
+          "companyName": "Elon Musk",
+          "priceOnResolution": 179.24,
+          "resolutionDate": "2024-05-24T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Elon Musk\""
+    },
+    {
+      "event": {
+        "eventId": "10691",
+        "title": "Justin Bieber unfollows Diddy on Instagram by Sunday night?",
+        "slug": "will-justin-bieber-unfollow-p-diddy-on-instagram-by-sunday-night",
+        "description": "",
+        "resolutionDate": "2024-05-19T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "META",
+          "companyName": "Instagram",
+          "priceOnResolution": 471.91,
+          "resolutionDate": "2024-05-19T12:00:00Z"
+        }
+      ],
+      "matchReason": "Title contains \"Instagram\""
+    },
+    {
+      "event": {
+        "eventId": "10696",
+        "title": "Will Russia capture Chasiv Yar before October?",
+        "slug": "will-russia-capture-chasiv-yar-before-october",
+        "description": "This market will resolve to “Yes” if, according to the ISW map, Russia captures the Chasiv Yar railroad station located on Pryvokazlna Vulytsia by September 30, 2024 at 11:59 PM ET.\n\nThe railroad station will be considered captured if any part of the train station is shaded red on the ISW map (https://storymaps.arcgis.com/stories/36a7f6a6f5a9448496de641cf64bd375) by the resolution date. If the area is not shaded red by September 30, 2024, 11:59 PM ET, the market will resolve to “No”.\n\nOnce Russia captures the railroad station, any subsequent loss of control will not be considered towards the resolution of this market.\n\nTrain Station Location: https://polymarket-upload.s3.us-east-2.amazonaws.com/Chasiv+Yar+Train+Station.png\n\nChasiv Yar Location: https://polymarket-upload.s3.us-east-2.amazonaws.com/Chasiv+Yar+Ukraine+Location.png\n\nThe primary resolution source for this market will be the ISW Ukraine map. If the ISW map is rendered unavailable, information from DeepStateMap (https://deepstatemap.live/) may be used. If information from both the ISW and DeepStateMap are rendered permanently unavailable, a consensus of credible reporting may be used.",
+        "resolutionDate": "2024-09-30T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "AMZN",
+          "companyName": "Amazon",
+          "priceOnResolution": 186.33,
+          "resolutionDate": "2024-09-30T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Amazon\""
+    },
+    {
+      "event": {
+        "eventId": "10714",
+        "title": "NBA",
+        "slug": "nba-dailies-2024-05-22",
+        "description": "https://polymarket-upload.s3.us-east-2.amazonaws.com/nba-dailies-2024-21-05-OJV-7H0Ld6_-.jpg",
+        "resolutionDate": "2024-05-22T12:00:00Z",
+        "outcome": "NO",
+        "finalProbability": "0"
+      },
+      "matchedStocks": [
+        {
+          "ticker": "AMZN",
+          "companyName": "Amazon",
+          "priceOnResolution": 183.13,
+          "resolutionDate": "2024-05-22T12:00:00Z"
+        }
+      ],
+      "matchReason": "Description contains \"Amazon\""
+    }
+  ]
+}
