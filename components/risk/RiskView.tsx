@@ -282,34 +282,12 @@ export function RiskView({
                 </div>
               )}
 
-            {/* Wood Wide AI Status */}
-            {result.woodWideAnalysis && (
-              <div className="mt-4 pt-4 border-t border-border/50">
-                <div className="flex items-center gap-2">
-                  <div
-                    className={`w-2 h-2 rounded-full ${result.woodWideAnalysis.error
-                        ? "bg-red-400"
-                        : result.woodWideAnalysis.enabled
-                          ? "bg-green-400"
-                          : "bg-gray-400"
-                      }`}
-                  />
-                  <span className="text-xs text-muted-foreground">
-                    Wood Wide AI:{" "}
-                    {result.woodWideAnalysis.error
-                      ? "Error"
-                      : result.woodWideAnalysis.enabled
-                        ? `Active (${result.woodWideAnalysis.anomalies?.length || 0} anomalies detected)`
-                        : "Disabled"}
-                  </span>
-                </div>
-                {result.woodWideAnalysis.error && (
-                  <p className="text-xs text-red-400 mt-1 ml-4">
-                    {result.woodWideAnalysis.error}
-                  </p>
-                )}
-              </div>
-            )}
+            {/* Wood Wide AI Branding */}
+            <div className="mt-4 pt-4 border-t border-border/50">
+              <span className="text-xs text-muted-foreground">
+                Powered by Wood Wide AI
+              </span>
+            </div>
           </div>
 
           {/* Benchmark Comparison */}
