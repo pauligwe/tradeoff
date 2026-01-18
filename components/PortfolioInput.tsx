@@ -388,71 +388,65 @@ export function PortfolioInput({
   if (compact) {
     return (
       <div className="space-y-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <Input
+        <div className="flex gap-4">
+          <input
             type="text"
-            placeholder="Add ticker"
+            placeholder="Ticker (e.g., AAPL)"
             value={ticker}
             onChange={(e) => setTicker(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-32 font-mono uppercase"
+            className="flex-1 bg-transparent border border-[#2d3139] px-3 py-2 text-sm mono uppercase focus:outline-none focus:border-[#3fb950]"
           />
-          <Input
+          <input
             type="number"
             placeholder="Shares"
             value={shares}
             onChange={(e) => setShares(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-24"
+            className="w-32 bg-transparent border border-[#2d3139] px-3 py-2 text-sm mono focus:outline-none focus:border-[#3fb950]"
             min="1"
           />
-          <Button
-            variant="secondary"
-            size="sm"
+          <button
             onClick={handleAdd}
             disabled={!ticker.trim() || !shares.trim()}
+            className="bg-[#3fb950] text-white px-6 py-2 font-medium hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add
-          </Button>
-          <div className="flex-1" />
-          <Button
-            variant="ghost"
-            size="sm"
+          </button>
+        </div>
+        <div className="flex gap-4 text-sm">
+          <button
             onClick={() => setShowImport(!showImport)}
-            className="text-muted-foreground hover:text-foreground"
+            className="text-[#858687] hover:text-white transition-colors"
           >
-            {showImport ? "Cancel" : "Import"}
-          </Button>
+            {showImport ? "Cancel import" : "Import CSV"}
+          </button>
           {brokerConnected ? (
-            <Button
-              variant="ghost"
-              size="sm"
+            <button
               onClick={handleRefreshHoldings}
               disabled={isConnectingBroker}
-              className="text-muted-foreground hover:text-foreground gap-1"
+              className="text-[#858687] hover:text-white transition-colors flex items-center gap-2"
             >
-              <span className="w-2 h-2 rounded-full bg-green-500" />
+              <span className="w-2 h-2 bg-[#3fb950]" />
               {isConnectingBroker ? "Syncing..." : "Sync Broker"}
-            </Button>
+            </button>
           ) : (
-            <Button
-              variant="ghost"
-              size="sm"
+            <button
               onClick={() => handleConnectBroker()}
               disabled={isConnectingBroker}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-[#858687] hover:text-white transition-colors"
             >
-              {isConnectingBroker ? "..." : "Connect Broker"}
-            </Button>
+              {isConnectingBroker ? "Connecting..." : "Connect Broker"}
+            </button>
           )}
         </div>
         {brokerError && (
-          <p className="text-sm text-destructive">{brokerError}</p>
+          <p className="text-sm text-[#f85149]">{brokerError}</p>
         )}
 
         {/* Import Section - Inline */}
         {showImport && (
-          <div className="space-y-4 p-4 bg-secondary/50 rounded-lg border border-border">
+          <div className="space-y-4 p-4 bg-[#0d1117] border border-[#2d3139]">
             <p className="text-sm font-medium">
               Import Portfolio (replaces current)
             </p>
@@ -469,10 +463,10 @@ export function PortfolioInput({
               />
               <label
                 htmlFor="portfolio-file-compact"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-background border border-border rounded-md cursor-pointer hover:bg-secondary transition-colors text-sm"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-transparent border border-[#2d3139] cursor-pointer hover:border-[#3fb950] transition-colors text-sm"
               >
                 <span>Upload CSV</span>
-                <span className="text-muted-foreground text-xs">
+                <span className="text-[#858687] text-xs">
                   (Fidelity, Schwab, Robinhood, etc.)
                 </span>
               </label>
@@ -480,7 +474,7 @@ export function PortfolioInput({
 
             {/* Paste Area */}
             <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-[#858687]">
                 Or paste your holdings:
               </p>
               <textarea
@@ -489,21 +483,21 @@ export function PortfolioInput({
                 placeholder={`Symbol, Shares
 NVDA, 50
 MSFT, 30`}
-                className="w-full h-24 px-3 py-2 bg-background border border-border rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent"
+                className="w-full h-24 px-3 py-2 bg-transparent border border-[#2d3139] mono text-sm resize-none focus:outline-none focus:border-[#3fb950]"
               />
             </div>
 
             {importError && (
-              <p className="text-sm text-destructive">{importError}</p>
+              <p className="text-sm text-[#f85149]">{importError}</p>
             )}
 
-            <Button
-              size="sm"
+            <button
               onClick={handleImport}
               disabled={!importText.trim()}
+              className="bg-[#3fb950] text-white px-4 py-2 text-sm font-medium hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Import & Replace
-            </Button>
+            </button>
           </div>
         )}
       </div>
@@ -516,95 +510,82 @@ MSFT, 30`}
       {portfolio.length === 0 && (
         <div className="space-y-6">
           {/* Broker Connection */}
-          <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg">
+          <div className="p-6 bg-[#0d1117] border border-[#3fb950]/30 border-l-2 border-l-[#3fb950]">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium">Connect Your Brokerage</p>
-                <p className="text-sm text-muted-foreground">
-                  Import your real portfolio from Fidelity, Schwab, Robinhood &
-                  more
+                <p className="font-semibold">Connect Your Brokerage</p>
+                <p className="text-sm text-[#858687]">
+                  Import your real portfolio from Fidelity, Schwab, Robinhood & more
                 </p>
               </div>
-              <Button
+              <button
                 onClick={() => handleConnectBroker()}
                 disabled={isConnectingBroker}
-                className="bg-accent text-accent-foreground hover:bg-accent/90"
+                className="bg-[#3fb950] text-white px-6 py-2 font-medium hover:brightness-110 transition-all disabled:opacity-50"
               >
                 {isConnectingBroker ? "Connecting..." : "Connect Broker"}
-              </Button>
+              </button>
             </div>
             {brokerError && (
-              <p className="text-sm text-destructive mt-2">{brokerError}</p>
+              <p className="text-sm text-[#f85149] mt-2">{brokerError}</p>
             )}
           </div>
 
           {/* Divider */}
           <div className="flex items-center gap-4">
-            <div className="flex-1 h-px bg-border" />
-            <span className="text-xs text-muted-foreground">or try a demo</span>
-            <div className="flex-1 h-px bg-border" />
+            <div className="flex-1 h-px bg-[#2d3139]" />
+            <span className="text-xs text-[#858687]">or try a demo</span>
+            <div className="flex-1 h-px bg-[#2d3139]" />
           </div>
 
           {/* Demo Portfolios */}
-          <div className="space-y-3">
-            <div className="flex flex-wrap gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => loadDemo("tech")}
-                className="text-xs"
-              >
-                Tech Heavy
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => loadDemo("crypto")}
-                className="text-xs"
-              >
-                Crypto Exposure
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => loadDemo("diversified")}
-                className="text-xs"
-              >
-                Diversified
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowImport(!showImport)}
-                className="text-xs"
-              >
-                Import CSV
-              </Button>
-            </div>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => loadDemo("tech")}
+              className="px-4 py-2 border border-[#2d3139] text-sm hover:border-[#3fb950] transition-colors"
+            >
+              Tech Heavy
+            </button>
+            <button
+              onClick={() => loadDemo("crypto")}
+              className="px-4 py-2 border border-[#2d3139] text-sm hover:border-[#3fb950] transition-colors"
+            >
+              Crypto Exposure
+            </button>
+            <button
+              onClick={() => loadDemo("diversified")}
+              className="px-4 py-2 border border-[#2d3139] text-sm hover:border-[#3fb950] transition-colors"
+            >
+              Diversified
+            </button>
+            <button
+              onClick={() => setShowImport(!showImport)}
+              className="px-4 py-2 border border-[#2d3139] text-sm hover:border-[#3fb950] transition-colors"
+            >
+              Import CSV
+            </button>
           </div>
         </div>
       )}
 
       {/* Broker Refresh - When connected and has portfolio */}
       {portfolio.length > 0 && brokerConnected && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span className="w-2 h-2 rounded-full bg-green-500" />
+        <div className="flex items-center gap-2 text-sm text-[#858687]">
+          <span className="w-2 h-2 bg-[#3fb950]" />
           <span>Broker connected</span>
-          <Button
-            variant="ghost"
-            size="sm"
+          <button
             onClick={handleRefreshHoldings}
             disabled={isConnectingBroker}
-            className="text-xs"
+            className="text-[#858687] hover:text-white transition-colors text-xs"
           >
             {isConnectingBroker ? "Syncing..." : "Sync"}
-          </Button>
+          </button>
         </div>
       )}
 
       {/* Import Section */}
       {showImport && (
-        <div className="space-y-4 p-4 bg-secondary/50 rounded-lg border border-border">
+        <div className="space-y-4 p-4 bg-[#0d1117] border border-[#2d3139]">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium">Import Portfolio</p>
             <button
@@ -613,7 +594,7 @@ MSFT, 30`}
                 setImportText("");
                 setImportError(null);
               }}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-[#858687] hover:text-white"
             >
               ×
             </button>
@@ -631,10 +612,10 @@ MSFT, 30`}
             />
             <label
               htmlFor="portfolio-file"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-background border border-border rounded-md cursor-pointer hover:bg-secondary transition-colors text-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-transparent border border-[#2d3139] cursor-pointer hover:border-[#3fb950] transition-colors text-sm"
             >
               <span>Upload CSV</span>
-              <span className="text-muted-foreground text-xs">
+              <span className="text-[#858687] text-xs">
                 (from Fidelity, Schwab, Robinhood, etc.)
               </span>
             </label>
@@ -642,7 +623,7 @@ MSFT, 30`}
 
           {/* Paste Area */}
           <div className="space-y-2">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-[#858687]">
               Or paste your holdings (supports most formats):
             </p>
             <textarea
@@ -654,50 +635,50 @@ MSFT, 30
 GOOGL, 20
 
 Or paste directly from your broker...`}
-              className="w-full h-32 px-3 py-2 bg-background border border-border rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full h-32 px-3 py-2 bg-transparent border border-[#2d3139] mono text-sm resize-none focus:outline-none focus:border-[#3fb950]"
             />
           </div>
 
           {importError && (
-            <p className="text-sm text-destructive">{importError}</p>
+            <p className="text-sm text-[#f85149]">{importError}</p>
           )}
 
-          <Button
-            size="sm"
+          <button
             onClick={handleImport}
             disabled={!importText.trim()}
+            className="bg-[#3fb950] text-white px-4 py-2 text-sm font-medium hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Import
-          </Button>
+          </button>
         </div>
       )}
 
       {/* Add Stock Form */}
-      <div className="flex gap-3">
-        <Input
+      <div className="flex gap-4">
+        <input
           type="text"
           placeholder="Ticker (e.g. NVDA)"
           value={ticker}
           onChange={(e) => setTicker(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-40 font-mono uppercase"
+          className="flex-1 bg-transparent border border-[#2d3139] px-3 py-2 text-sm mono uppercase focus:outline-none focus:border-[#3fb950]"
         />
-        <Input
+        <input
           type="number"
           placeholder="Shares"
           value={shares}
           onChange={(e) => setShares(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-28"
+          className="w-32 bg-transparent border border-[#2d3139] px-3 py-2 text-sm mono focus:outline-none focus:border-[#3fb950]"
           min="1"
         />
-        <Button
-          variant="secondary"
+        <button
           onClick={handleAdd}
           disabled={!ticker.trim() || !shares.trim()}
+          className="bg-[#3fb950] text-white px-6 py-2 font-medium hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Add
-        </Button>
+        </button>
       </div>
     </div>
   );
